@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/exceptions/signup_exception.dart';
 import 'package:laborus_app/core/model/users/school_model.dart';
-import 'package:laborus_app/core/model/users/user_modell.dart';
+import 'package:laborus_app/core/model/users/user_model.dart';
 import 'package:laborus_app/core/services/auth_services.dart';
 
 class SignupProvider with ChangeNotifier {

@@ -8,7 +8,7 @@ import 'package:laborus_app/core/model/responses/auth_response.dart';
 import 'dart:async';
 
 import 'package:laborus_app/core/model/users/school_model.dart';
-import 'package:laborus_app/core/model/users/user_modell.dart';
+import 'package:laborus_app/core/model/users/user_model.dart';
 
 class AuthService {
   static final String _baseUrl =

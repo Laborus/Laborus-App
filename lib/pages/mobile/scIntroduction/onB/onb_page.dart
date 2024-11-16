@@ -18,32 +18,16 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   int activeIndex = 0;
   final PageController pageController = PageController();
   final List<String> urlImages = [
-    'assets/img/slide1.png',
-    'assets/img/slide2.png',
-    'assets/img/slide3.png',
+    'assets/img/laborus_light.png',
+    'assets/img/welcome_onb.png',
+    'assets/img/slide3.jpeg',
   ];
   final List<String> titles = ['Laborus', 'Compartilhe', 'Interaja'];
-
-  @override
-  void initState() {
-    super.initState();
-    checkOnboarding();
-  }
 
   @override
   void dispose() {
     pageController.dispose();
     super.dispose();
-  }
-
-  void checkOnboarding() async {
-    final onboardingShown = await LocalDatabase.isOnboardingShown();
-    if (onboardingShown) {
-      final routePath = AppRouteEnum.welcome.name;
-      if (mounted) {
-        context.pushReplacement(routePath);
-      }
-    }
   }
 
   void refresh() async {
@@ -69,18 +53,31 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            urlImage,
-            height: 200,
-            fit: BoxFit.contain,
+          Container(
+            width: 150,
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
+              image: DecorationImage(
+                image: AssetImage(urlImage),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           const SizedBox(height: 16),
           Text(
             title,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 8),
-          label,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * .8,
+            child: label,
+          ),
         ],
       ),
     );

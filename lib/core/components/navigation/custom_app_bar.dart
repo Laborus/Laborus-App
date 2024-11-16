@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:go_router/go_router.dart';
-import 'package:laborus_app/core/components/generics/avatar_picture.dart';
+import 'package:provider/provider.dart';
+import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:laborus_app/core/components/modals/profile_modal.dart';
 import 'package:laborus_app/core/routes/app_route_enum.dart';
 import 'package:laborus_app/core/routes/go_router_prevent_duplicate.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext context;
@@ -17,27 +19,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      scrolledUnderElevation: 0,
-      foregroundColor: Theme.of(context).colorScheme.primary,
-      toolbarHeight: preferredSize.height,
-      leadingWidth: double.infinity,
-      elevation: 0,
-      leading: Container(
-        margin: const EdgeInsets.only(left: 22, right: 22),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            logo(),
-            actions(),
-          ],
+    return Consumer<UserProvider>(builder: (context, userProvider, child) {
+      final user = userProvider.user;
+
+      return AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        scrolledUnderElevation: 0,
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        toolbarHeight: preferredSize.height,
+        leadingWidth: double.infinity,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 22, right: 22),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              logo(),
+              actions(user?.profileImage),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
-  Row actions() {
+  Row actions(String? profileImage) {
     return Row(
       children: [
         IconButton(
@@ -65,9 +71,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         const SizedBox(width: 5),
-        AvatarPicture(
-          size: 40,
-          imagePath: 'assets/img/profile.jpg',
+        Base64ImageWidget(
+          base64String: profileImage ?? '',
+          width: 40,
+          height: 40,
+          defaultImagePath: 'assets/img/profile.jpg',
+          isCircular: true,
           onTap: () => ProfileModal.show(context),
         )
       ],

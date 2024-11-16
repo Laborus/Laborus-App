@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:laborus_app/core/data/auth_database.dart';
 import 'package:laborus_app/core/data/local_database.dart';
 import 'package:laborus_app/core/providers/signin_provider.dart';
 import 'package:laborus_app/core/providers/route_stack_provider.dart';
 import 'package:laborus_app/core/providers/settings_provider.dart';
 import 'package:laborus_app/core/providers/signup_provider.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/routes/routes.dart';
+import 'package:laborus_app/core/services/user_service.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -33,6 +36,16 @@ void main() async {
             return themeProvider;
           },
         ),
+        ChangeNotifierProvider(
+          create: (context) {
+            final userProvider = UserProvider(
+              UserService(),
+              AuthDatabase(),
+            );
+            userProvider.initializeUser(); // Inicializa os dados do usuário
+            return userProvider; // Retorna a instância do provider
+          },
+        )
       ],
       child: const LaborusAPP(),
     ),
