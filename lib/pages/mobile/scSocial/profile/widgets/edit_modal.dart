@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:laborus_app/core/components/forms/text_field_form.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
-import 'package:laborus_app/core/utils/theme/font_size.dart';
 import 'package:provider/provider.dart';
 
 class EditAboutModal extends StatefulWidget {
+  const EditAboutModal({super.key});
+
   @override
   _EditAboutModalState createState() => _EditAboutModalState();
 }
@@ -47,14 +48,14 @@ class _EditAboutModalState extends State<EditAboutModal> {
               if (value.length > maxLength) {
                 _controller.text = value.substring(0, maxLength);
                 _controller.selection = TextSelection.fromPosition(
-                  TextPosition(offset: maxLength),
+                  const TextPosition(offset: maxLength),
                 );
               }
               setState(() {});
             },
             hintText: 'Escreva sobre você',
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _isLoading
                 ? null
@@ -73,13 +74,13 @@ class _EditAboutModalState extends State<EditAboutModal> {
                   },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryPurple,
-              padding: EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
             ),
             child: _isLoading
-                ? CircularProgressIndicator(color: Colors.white)
-                : Text('Salvar'),
+                ? const CircularProgressIndicator(color: Colors.white)
+                : const Text('Salvar'),
           ),
         ],
       ),

@@ -14,11 +14,11 @@ class AboutSection extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, // Para ajustar à altura do teclado
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return EditAboutModal();
+        return const EditAboutModal();
       },
     );
   }
@@ -43,14 +43,14 @@ class AboutSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionTitle(title: 'Sobre'),
-                SizedBox(height: 8),
+                const SectionTitle(title: 'Sobre'),
+                const SizedBox(height: 8),
                 SectionContent(
                   content: user?.aboutContent ?? 'teste',
                 ),
-                SizedBox(height: 13),
-                SectionTitle(title: 'Curso'),
-                SizedBox(height: 8),
+                const SizedBox(height: 13),
+                const SectionTitle(title: 'Curso'),
+                const SizedBox(height: 8),
                 SectionContent(
                   content: user?.course.toLowerCase() ?? 'teste',
                 ),

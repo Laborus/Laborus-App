@@ -32,7 +32,7 @@ class TagsSection extends StatelessWidget {
               backgroundColor: tagData['color'],
             );
           }).toList(),
-          EditTags(),
+          const EditTags(),
         ],
       ),
     );
