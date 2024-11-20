@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:laborus_app/core/data/auth_database.dart';
 import 'package:laborus_app/core/model/users/person_model.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
   static final String _baseUrl =
       dotenv.env['API_URL'] ?? 'https://localhost:3000/';
+  static final AuthDatabase _authDatabase = AuthDatabase();
 
   Future<PersonModel> getUserById(String id) async {
     try {
@@ -21,15 +23,48 @@ class UserService {
     }
   }
 
+  Future<void> updateAbout(String userId, String aboutContent) async {
+    String? token = await _authDatabase.getToken();
+    if (token == null) {
+      throw Exception('User not authenticated');
+    }
+
+    try {
+      final response = await http.patch(
+        Uri.parse('$_baseUrl/api/user/edit/$userId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode({'aboutContent': aboutContent}),
+      );
+      print(response.body);
+      if (response.statusCode != 200) {
+        final responseData = jsonDecode(response.body);
+        print(responseData);
+        throw Exception(responseData['message']);
+      }
+    } catch (e) {
+      throw Exception('Erro na conexão: $e');
+    }
+  }
+
   Future<void> updateUserTags(String userId, List<String> tags) async {
     try {
+      String? token = await _authDatabase.getToken();
+      if (token == null) {
+        throw Exception('Usuário não autenticado');
+      }
       if (tags.length > 3) {
         throw Exception('Número máximo de tags é 3');
       }
 
       final response = await http.patch(
-        Uri.parse('$_baseUrl/api/users/$userId'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('$_baseUrl/api/user/edit/$userId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
         body: jsonEncode({'tags': tags}),
       );
 

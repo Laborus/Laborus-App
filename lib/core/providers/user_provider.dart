@@ -36,6 +36,19 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> refreshUser() async {
+    try {
+      final userId = await _authDatabase.getUserId();
+      if (userId == null) return;
+
+      final updatedUser = await _userService.getUserById(userId);
+      _setUser(updatedUser);
+      debugPrint('Usuário atualizado: ${updatedUser.name}');
+    } catch (e) {
+      debugPrint('Erro ao atualizar usuário: $e');
+    }
+  }
+
   Future<void> updateUserTags(List<String> tags) async {
     try {
       _setLoadingState(true);
@@ -74,6 +87,28 @@ class UserProvider extends ChangeNotifier {
   void _setError(String error) {
     _error = error;
     notifyListeners();
+  }
+
+  Future<void> updateAbout(String about) async {
+    try {
+      _setLoadingState(true);
+      final userId = await _authDatabase.getUserId();
+      if (userId == null) {
+        throw Exception('Usuário não autenticado');
+      }
+
+      await _userService.updateAbout(userId, about);
+
+      // Atualiza o estado local do usuário
+      if (_user != null) {
+        _user = _user!.copyWith(aboutContent: about);
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Falha ao atualizar tags: ${e.toString()}');
+    } finally {
+      _setLoadingState(false);
+    }
   }
 
   Future<void> destroyUserData() async {

@@ -16,8 +16,21 @@ class ProfileHeader extends StatelessWidget {
         Provider.of<ImageUpdateProvider>(context);
     final PersonModel? user = userProvider.user;
 
+    if (imageUpdateProvider.error != null) {
+      Future.delayed(Duration.zero, () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              imageUpdateProvider.error!,
+            ),
+          ),
+        );
+      });
+    }
+
     return Column(
       children: [
+        if (imageUpdateProvider.isLoading) const LinearProgressIndicator(),
         Stack(
           clipBehavior: Clip.none,
           children: [

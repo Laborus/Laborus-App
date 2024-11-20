@@ -16,6 +16,7 @@ class ProfilePage extends StatelessWidget {
         bottom: MediaQuery.of(context).padding.bottom,
       ),
       child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ProfileHeader(),
           SizedBox(height: 66),

@@ -12,7 +12,7 @@ import 'package:laborus_app/core/model/users/user_model.dart';
 
 class AuthService {
   static final String _baseUrl =
-      dotenv.env['API_URL'] ?? 'https://localhost:3000/';
+      dotenv.env['API_URL'] ?? 'https://localhost:3000';
 
   final AuthDatabase _authDatabase = AuthDatabase();
 

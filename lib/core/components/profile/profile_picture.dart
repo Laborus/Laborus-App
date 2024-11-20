@@ -26,6 +26,7 @@ class ProfilePicture extends StatelessWidget {
       fit: BoxFit.cover,
       isCircular: true,
       defaultImagePath: imagePath,
+      onTap: onEdit,
     );
 
     return Stack(

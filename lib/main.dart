@@ -49,12 +49,15 @@ void main() async {
           },
         ),
         ChangeNotifierProvider(
-          create: (context) {
-            final imagePickerService = ImagePickerService();
-            final authDatabase = AuthDatabase();
-            return ImageUpdateProvider(imagePickerService, authDatabase);
-          },
-        )
+          create: (context) => ImageUpdateProvider(
+            ImagePickerService(),
+            AuthDatabase(),
+            Provider.of<UserProvider>(
+              context,
+              listen: false,
+            ),
+          ),
+        ),
       ],
       child: const LaborusAPP(),
     ),

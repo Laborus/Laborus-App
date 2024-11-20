@@ -11,12 +11,14 @@ class PersonModel {
   final String profileImage;
   final String bannerImage;
   final String accountStatus;
+  final String? aboutContent;
   final bool isOnline;
   final List<String> saved;
   final List<String> following;
   final List<String> inbox;
 
   PersonModel({
+    this.aboutContent,
     required this.id,
     required this.name,
     required this.email,
@@ -44,6 +46,7 @@ class PersonModel {
       cpf: json['cpf'],
       school: json['school'],
       course: json['course'],
+      aboutContent: json['aboutContent'],
       tags: List<String>.from(json['tags'] ?? []),
       connections: List<String>.from(json['connections'] ?? []),
       profileImage: json['profileImage'],
@@ -69,6 +72,7 @@ class PersonModel {
     String? profileImage,
     String? bannerImage,
     String? accountStatus,
+    String? aboutContent,
     bool? isOnline,
     List<String>? saved,
     List<String>? following,
@@ -83,6 +87,7 @@ class PersonModel {
       school: school ?? this.school,
       course: course ?? this.course,
       tags: tags ?? this.tags,
+      aboutContent: aboutContent ?? this.aboutContent,
       connections: connections ?? this.connections,
       profileImage: profileImage ?? this.profileImage,
       bannerImage: bannerImage ?? this.bannerImage,

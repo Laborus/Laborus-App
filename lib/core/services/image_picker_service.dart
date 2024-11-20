@@ -38,7 +38,7 @@ class ImagePickerService {
       if (token == null) {
         throw Exception('User not authenticated');
       }
-      final String url = '${dotenv.env['API_URL']}/user/edit/$userId';
+      final String url = '${dotenv.env['API_URL']}/api/user/edit/$userId';
 
       final Map<String, dynamic> body = isProfileImage
           ? {'profileImage': base64Image}
@@ -52,7 +52,8 @@ class ImagePickerService {
         },
         body: jsonEncode(body),
       );
-
+      print(
+          'API response status: ${response.statusCode}, body: ${response.body}, token: $token');
       return response.statusCode == 200;
     } catch (e) {
       print('Error updating user image: $e');
