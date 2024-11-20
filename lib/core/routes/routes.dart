@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laborus_app/core/model/laborus/post.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
+import 'package:laborus_app/main.dart';
 import 'package:laborus_app/pages/mobile/logic.dart';
 import 'package:laborus_app/pages/mobile/scAuth/signin/signin.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/campus/campus.dart';
@@ -18,6 +20,7 @@ import 'package:laborus_app/pages/mobile/scSettings/settings/settings_page.dart'
 import 'package:laborus_app/pages/mobile/scAuth/signup/signup.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/templates/home_template.dart';
 import 'package:laborus_app/pages/mobile/scIntroduction/welcome/welcome_page.dart';
+import 'package:provider/provider.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _feedNavigatorKey = GlobalKey<NavigatorState>();

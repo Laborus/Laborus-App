@@ -42,8 +42,8 @@ void main() async {
               UserService(),
               AuthDatabase(),
             );
-            userProvider.initializeUser(); // Inicializa os dados do usuário
-            return userProvider; // Retorna a instância do provider
+            userProvider.initializeUser();
+            return userProvider;
           },
         )
       ],

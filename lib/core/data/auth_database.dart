@@ -24,8 +24,8 @@ class AuthDatabase {
     return prefs.getString(_userIdKey);
   }
 
-  Future<bool> validateToken() async {
-    final token = await getToken();
+  Future<bool> validateToken({String? token}) async {
+    token ??= await getToken();
     if (token != null) {
       try {
         final response = await http.get(

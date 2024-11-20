@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laborus_app/core/components/forms/text_field_form.dart';
 import 'package:laborus_app/core/components/navigation/custom_app_bar_introduction.dart';
 import 'package:laborus_app/core/providers/signin_provider.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/routes/app_route_enum.dart';
 import 'package:laborus_app/core/utils/constants/validators.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
@@ -46,23 +47,32 @@ class _SignInPageState extends State<SignInPage> {
 
       if (mounted) {
         if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login realizado com sucesso!'),
-              backgroundColor: AppColors.green,
-              duration: Duration(seconds: 3),
-            ),
-          );
-          AppRouteEnum currentPath = AppRouteEnum.home;
-          String routePath = currentPath.name;
-          context.go(routePath);
+          final userProvider = context.read<UserProvider>();
+          try {
+            await userProvider.initializeUser();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Login realizado com sucesso!'),
+                backgroundColor: AppColors.green,
+                duration: Duration(seconds: 3),
+              ),
+            );
+            context.go(AppRouteEnum.home.name);
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Erro ao buscar informações do usuário: $e'),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
         } else {
-          // Exibe a mensagem de erro capturada pelo provider
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(authProvider.error ?? 'Erro desconhecido'),
               backgroundColor: Colors.red,
-              duration: Duration(seconds: 3),
+              duration: const Duration(seconds: 3),
             ),
           );
         }

@@ -17,7 +17,6 @@ class UserProvider extends ChangeNotifier {
   String? get error => _error;
   PersonModel? get user => _user;
 
-  /// Inicializa os dados do usuário ao carregar a aplicação
   Future<void> initializeUser() async {
     try {
       _setLoadingState(true);
@@ -37,7 +36,6 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  /// Atualiza as tags do usuário
   Future<void> updateUserTags(List<String> tags) async {
     try {
       _setLoadingState(true);
@@ -76,5 +74,21 @@ class UserProvider extends ChangeNotifier {
   void _setError(String error) {
     _error = error;
     notifyListeners();
+  }
+
+  Future<void> destroyUserData() async {
+    try {
+      _user = null;
+
+      _error = null;
+
+      _isLoading = false;
+
+      await _authDatabase.clearAuthData();
+
+      notifyListeners();
+    } catch (e) {
+      _setError('Erro ao destruir dados do usuário: $e');
+    }
   }
 }

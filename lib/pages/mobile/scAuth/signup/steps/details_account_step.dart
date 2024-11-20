@@ -6,6 +6,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
 class DetailsAccountStep extends StatefulWidget {
+  const DetailsAccountStep({super.key});
+
   @override
   _DetailsAccountStepState createState() => _DetailsAccountStepState();
 }

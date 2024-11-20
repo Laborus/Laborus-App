@@ -40,7 +40,7 @@ class _InfoInstitutionStepState extends State<InfoInstitutionStep> {
           future: provider.getSchools(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
+              return SizedBox(
                 height: 200,
                 child: Center(
                   child: Column(
@@ -49,7 +49,7 @@ class _InfoInstitutionStepState extends State<InfoInstitutionStep> {
                       CircularProgressIndicator(
                         color: Theme.of(context).colorScheme.secondary,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Text(
                         'Carregando instituições...',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -68,7 +68,7 @@ class _InfoInstitutionStepState extends State<InfoInstitutionStep> {
                   children: [
                     Icon(Icons.error_outline,
                         color: Theme.of(context).colorScheme.error, size: 48),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
                       'Erro ao carregar instituições',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -79,7 +79,7 @@ class _InfoInstitutionStepState extends State<InfoInstitutionStep> {
                       onPressed: () {
                         setState(() {}); // This will trigger a rebuild
                       },
-                      child: Text('Tentar novamente'),
+                      child: const Text('Tentar novamente'),
                     ),
                   ],
                 ),

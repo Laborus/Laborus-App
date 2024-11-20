@@ -9,6 +9,9 @@ class CustomBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String currentUrl = GoRouterState.of(context).uri.toString();
+
+    print(currentUrl);
     return Padding(
       padding: const EdgeInsets.only(
         left: 21,
@@ -67,23 +70,28 @@ class CustomBottomAppBar extends StatelessWidget {
                       icon: Icons.home_outlined,
                       label: 'Início',
                       context: context,
+                      isActive: currentUrl.contains(AppRouteEnum.home.name),
                       padding: const EdgeInsets.only(left: 5),
                     ),
                     buildBottomNavItem(
                       icon: Icons.people_outline,
                       label: 'Conexões',
                       context: context,
+                      isActive:
+                          currentUrl.contains(AppRouteEnum.connections.name),
                     ),
                     buildBottomNavItem(label: '', context: context),
                     buildBottomNavItem(
                       icon: Icons.work_outline,
                       label: 'Vagas',
                       context: context,
+                      isActive: currentUrl.contains(AppRouteEnum.job.name),
                     ),
                     buildBottomNavItem(
                       icon: Icons.chat_bubble_outline,
                       label: 'Conversas',
                       context: context,
+                      isActive: currentUrl.contains(AppRouteEnum.chat.name),
                       padding: const EdgeInsets.only(right: 5),
                     ),
                   ],
@@ -117,11 +125,13 @@ class CustomBottomAppBar extends StatelessWidget {
     );
   }
 
-  BottomNavigationBarItem buildBottomNavItem(
-      {IconData? icon,
-      required String label,
-      required BuildContext context,
-      EdgeInsets? padding}) {
+  BottomNavigationBarItem buildBottomNavItem({
+    IconData? icon,
+    required String label,
+    required BuildContext context,
+    bool isActive = false, // Adicionado para verificar se a rota está ativa.
+    EdgeInsets? padding,
+  }) {
     return BottomNavigationBarItem(
       icon: Padding(
         padding: padding ?? const EdgeInsets.all(0),
@@ -131,14 +141,18 @@ class CustomBottomAppBar extends StatelessWidget {
             Icon(
               icon ?? Icons.home,
               size: 24,
-              color: Theme.of(context).colorScheme.onSecondary,
+              color: isActive
+                  ? AppColors.primaryPurple
+                  : Theme.of(context).colorScheme.onSecondary,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSecondary,
-                fontWeight: FontWeight.w800,
+                color: isActive
+                    ? AppColors.primaryPurple
+                    : Theme.of(context).colorScheme.onSecondary,
+                fontWeight: isActive ? FontWeight.bold : FontWeight.w400,
               ).copyWith(
                 fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
               ),

@@ -19,28 +19,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(builder: (context, userProvider, child) {
-      final user = userProvider.user;
+    final profileImage = context.watch<UserProvider>().user?.profileImage;
 
-      return AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        scrolledUnderElevation: 0,
-        foregroundColor: Theme.of(context).colorScheme.primary,
-        toolbarHeight: preferredSize.height,
-        leadingWidth: double.infinity,
-        elevation: 0,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 22, right: 22),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              logo(),
-              actions(user?.profileImage),
-            ],
-          ),
+    return AppBar(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      scrolledUnderElevation: 0,
+      foregroundColor: Theme.of(context).colorScheme.primary,
+      toolbarHeight: preferredSize.height,
+      leadingWidth: double.infinity,
+      elevation: 0,
+      leading: Container(
+        margin: const EdgeInsets.only(left: 22, right: 22),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            logo(),
+            actions(profileImage),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
   Row actions(String? profileImage) {
@@ -75,7 +73,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           base64String: profileImage ?? '',
           width: 40,
           height: 40,
-          defaultImagePath: 'assets/img/profile.jpg',
+          defaultImagePath: 'assets/img/pessoa.png',
           isCircular: true,
           onTap: () => ProfileModal.show(context),
         )

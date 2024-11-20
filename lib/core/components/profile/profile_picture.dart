@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/components/buttons/edit_icon.dart';
 
 class ProfilePicture extends StatelessWidget {
   final String imagePath;
+  final String base64Image;
   final VoidCallback onEdit;
 
   const ProfilePicture({
     super.key,
     required this.imagePath,
+    required this.base64Image,
     required this.onEdit,
   });
 
   @override
   Widget build(BuildContext context) {
+    Widget profileImage;
+
+    profileImage = Base64ImageWidget(
+      base64String: base64Image,
+      width: 67,
+      height: 67,
+      fit: BoxFit.cover,
+      isCircular: true,
+      defaultImagePath: imagePath,
+    );
+
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.bottomRight,
       children: [
-        Container(
-          width: 67,
-          height: 67,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(9999),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.primary,
-              width: 2,
-            ),
-            image: DecorationImage(
-              image: AssetImage(imagePath),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
+        profileImage,
         Positioned(
           right: -3,
           bottom: -5,

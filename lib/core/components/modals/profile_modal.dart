@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:laborus_app/core/components/generics/avatar_picture.dart';
+import 'package:laborus_app/core/components/generics/base64_image.dart';
+import 'package:laborus_app/core/model/users/person_model.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/routes/app_route_enum.dart';
 import 'package:laborus_app/core/routes/go_router_prevent_duplicate.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
+import 'package:provider/provider.dart';
 
 class ProfileModal {
   static void show(BuildContext context) {
@@ -14,6 +17,8 @@ class ProfileModal {
         borderRadius: BorderRadius.vertical(top: Radius.circular(13)),
       ),
       builder: (BuildContext context) {
+        final PersonModel? user = Provider.of<UserProvider>(context).user;
+
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -30,9 +35,12 @@ class ProfileModal {
                 },
                 child: Row(
                   children: [
-                    const AvatarPicture(
-                      size: 40,
-                      imagePath: 'assets/img/profile.jpg',
+                    Base64ImageWidget(
+                      base64String: user?.profileImage ?? '',
+                      width: 40,
+                      height: 40,
+                      defaultImagePath: 'assets/img/pessoa.png',
+                      isCircular: true,
                     ),
                     const SizedBox(width: 8),
                     Column(
@@ -47,7 +55,7 @@ class ProfileModal {
                           ),
                         ),
                         Text(
-                          'ana.maria@gmail.com',
+                          user?.email ?? 'test@gmail.com',
                           style: TextStyle(
                             fontSize: AppFontSize.small,
                             fontWeight: FontWeight.w500,

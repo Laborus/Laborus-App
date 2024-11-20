@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:laborus_app/core/data/global_vars.dart';
 import 'package:laborus_app/core/components/list/option_tile.dart';
 import 'package:laborus_app/core/components/profile/profile_box.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/routes/app_route_enum.dart';
 import 'package:laborus_app/core/routes/go_router_prevent_duplicate.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -67,6 +69,7 @@ class SettingsPage extends StatelessWidget {
                 isSwitch: false,
                 isSignOut: true,
                 callback: () {
+                  context.read<UserProvider>().destroyUserData();
                   AppRouteEnum path = AppRouteEnum.welcome;
                   GoRouter.of(context)
                       .clearStackAndNavigate(context, path.name);
