@@ -2,37 +2,66 @@ import 'package:flutter/material.dart';
 import 'package:laborus_app/core/components/cards/post_card.dart';
 import 'package:laborus_app/core/components/generics/avatar_picture.dart';
 import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
-import 'package:laborus_app/core/data/data_post.dart';
+import 'package:laborus_app/core/model/laborus/post.dart';
+import 'package:laborus_app/core/providers/post_provider.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
+import 'package:provider/provider.dart';
 
 class FeedTab extends StatelessWidget {
   const FeedTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).padding.bottom,
-        top: MediaQuery.of(context).padding.top,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GenericListBuilderSeparated(
-            padding: const EdgeInsets.only(top: 13),
-            itemCount: posts.length,
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return PostWidget(post: posts[index]);
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 13);
-            },
+    return Consumer2<UserProvider, PostProvider>(
+      builder: (context, userProvider, postProvider, _) {
+        final user = userProvider.user;
+        final schoolId = user?.school ?? '';
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            await postProvider.loadCampusPosts(schoolId);
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+              top: MediaQuery.of(context).padding.top,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (postProvider.isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else if (postProvider.postsCampus.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: Text(
+                        'Nenhum post encontrado.',
+                        style: TextStyle(fontSize: AppFontSize.medium),
+                      ),
+                    ),
+                  )
+                else
+                  GenericListBuilderSeparated(
+                    padding: const EdgeInsets.only(top: 13),
+                    itemCount: postProvider.postsCampus.length,
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return PostWidget(post: postProvider.postsCampus[index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 13);
+                    },
+                  ),
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

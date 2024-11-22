@@ -57,15 +57,15 @@ final _router = GoRouter(
         return const WelcomePage();
       },
     ),
-    GoRoute(
-      path: '/feed/post',
-      name: 'post',
-      builder: (context, state) {
-        return PostFullSizePage(
-          post: state.extra as Post,
-        );
-      },
-    ),
+    // GoRoute(
+    //   path: '/feed/post',
+    //   name: 'post',
+    //   // builder: (context, state) {
+    //   //   return PostFullSizePage(
+    //   //     post: state.extra as Post,
+    //   //   );
+    //   // },
+    // ),
     GoRoute(
       path: '/signin',
       name: 'Signin',

@@ -25,6 +25,7 @@ class ProfileBanner extends StatelessWidget {
       height: 162,
       fit: BoxFit.cover,
       defaultImagePath: imagePath!,
+      isCircular: false,
     );
 
     return Stack(
