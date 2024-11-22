@@ -1,3 +1,4 @@
+import 'package:laborus_app/core/model/laborus/comments.dart';
 import 'package:laborus_app/core/model/laborus/user.dart';
 
 class Post {
@@ -8,7 +9,7 @@ class Post {
   final String media;
   final String visibility;
   final int likesCount;
-  // final List<Comment> comments;
+  final List<Comment>? comments;
   final int reportCount;
   final List<String> shares;
   final List<String> likedBy;
@@ -24,7 +25,7 @@ class Post {
     this.media = '',
     required this.visibility,
     this.likesCount = 0,
-    // this.comments = const [],
+    this.comments,
     this.reportCount = 0,
     this.shares = const [],
     this.likedBy = const [],
@@ -37,13 +38,17 @@ class Post {
     return Post(
       id: json['_id'] ?? '',
       title: json['title'] ?? '',
-      user: json['postedBy'] is Map<String, dynamic>
+      user: json['postedBy'] is Map
           ? User.fromJson(json['postedBy'])
           : User(id: json['postedBy'] ?? '', name: 'Usuário Desconhecido'),
       text: json['textContent'] ?? '',
       media: json['image'] ?? '',
       visibility: json['postedOn'] ?? 'Global',
       likesCount: json['likes']?.length ?? 0,
+      comments: (json['comments'] as List?)
+              ?.map((comment) => Comment.fromJson(comment))
+              .toList() ??
+          [],
       reportCount: json['reports']?.length ?? 0,
       shares: List<String>.from(json['sharedBy'] ?? []),
       likedBy: List<String>.from(json['likes'] ?? []),
@@ -71,7 +76,7 @@ class Post {
     String? text,
     String? visibility,
     int? likesCount,
-    // List<Comment>? comments,
+    List<Comment>? comments,
     int? reportCount,
     List<String>? shares,
     List<String>? likedBy,
@@ -87,7 +92,7 @@ class Post {
       text: text ?? this.text,
       visibility: visibility ?? this.visibility,
       likesCount: likesCount ?? this.likesCount,
-      // comments: comments ?? this.comments,
+      comments: comments ?? this.comments,
       reportCount: reportCount ?? this.reportCount,
       shares: shares ?? this.shares,
       likedBy: likedBy ?? this.likedBy,
@@ -97,7 +102,6 @@ class Post {
     );
   }
 
-  // Métodos úteis
   bool isLikedByUser(String userId) => likedBy.contains(userId);
   bool isSharedByUser(String userId) => shares.contains(userId);
 

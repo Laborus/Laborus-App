@@ -162,76 +162,23 @@ class PostService {
     }
   }
 
-  // Adicionar comentário
-  Future<Comment> addComment(String postId, String content) async {
+  Future<Comment> createComment(
+      String postId, String userId, String content) async {
     try {
       final headers = await _getHeaders();
+
       final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/comments'),
+        Uri.parse('$_baseUrl/api/comment/$postId'),
         headers: headers,
-        body: json.encode({'content': content}),
+        body: json.encode({'textContent': content}),
       );
 
       if (response.statusCode == 201) {
         return Comment.fromJson(json.decode(response.body));
-      } else {
-        throw Exception(
-            'Falha ao adicionar comentário: ${response.statusCode}');
       }
+      throw Exception('Failed to create comment: ${response.body}');
     } catch (e) {
-      throw Exception('Erro ao adicionar comentário: $e');
-    }
-  }
-
-  // Compartilhar post
-  Future<void> sharePost(String postId) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/share'),
-        headers: headers,
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Falha ao compartilhar post: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Erro ao compartilhar post: $e');
-    }
-  }
-
-  // Salvar post
-  Future<void> savePost(String postId) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/save'),
-        headers: headers,
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Falha ao salvar post: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Erro ao salvar post: $e');
-    }
-  }
-
-  // Reportar post
-  Future<void> reportPost(String postId, String reason) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/report'),
-        headers: headers,
-        body: json.encode({'reason': reason}),
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Falha ao reportar post: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Erro ao reportar post: $e');
+      throw Exception('Error creating comment: $e');
     }
   }
 

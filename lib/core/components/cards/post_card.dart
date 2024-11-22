@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laborus_app/core/components/cards/button_comment.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:provider/provider.dart';
 import 'package:laborus_app/core/model/laborus/post.dart';
@@ -175,7 +176,7 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _buildPostActions(BuildContext context, PostProvider postProvider) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 21),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +185,7 @@ class PostWidget extends StatelessWidget {
             children: [
               // ButtonLike(post: post),
               SizedBox(width: 16),
-              // buttonComment(context, post),
+              ButtonComment(post: post),
             ],
           ),
           // Text(

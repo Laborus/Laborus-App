@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laborus_app/core/model/laborus/comments.dart';
 import 'package:laborus_app/core/model/laborus/post.dart';
 import 'package:laborus_app/core/services/post_service.dart';
 
@@ -9,6 +10,8 @@ class PostProvider extends ChangeNotifier {
   List<Post> _posts = [];
   List<Post> _postsCampus = [];
   List<Post> _userPosts = [];
+  List<Comment> _comments = [];
+
   PostProvider(this._postService) {
     loadPosts();
   }
@@ -18,6 +21,7 @@ class PostProvider extends ChangeNotifier {
   List<Post> get posts => _posts;
   List<Post> get postsCampus => _postsCampus;
   List<Post> get userPosts => _userPosts;
+  List<Comment> get comments => _comments;
 
   Future<void> loadPosts() async {
     try {
@@ -32,18 +36,14 @@ class PostProvider extends ChangeNotifier {
   }
 
   Future<void> loadUserPosts(String userId) async {
-    _isLoading = true;
-    notifyListeners();
-
     try {
+      _setLoadingState(true);
       final post = await _postService.getPostsByUserId(userId);
       _setPostsByUserId(post);
     } catch (e) {
-      print(e);
-      _userPosts = [];
+      _setError(e.toString());
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoadingState(false);
     }
   }
 
@@ -53,7 +53,6 @@ class PostProvider extends ChangeNotifier {
       final posts = await _postService.getPostCampus(idSchool);
       _setPostsCampus(posts);
     } catch (e) {
-      print(e);
       _setError(e.toString());
     } finally {
       _setLoadingState(false);
@@ -78,6 +77,46 @@ class PostProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> loadComments(String postId) async {
+    try {
+      _setLoadingState(true);
+      // Os comentários já estão associados ao post?
+      final post = _posts.firstWhere((post) => post.id == postId);
+      if (post == null) throw Exception("Post não encontrado.");
+      _setComments(post.comments ?? []);
+    } catch (e) {
+      _setError(e.toString());
+    } finally {
+      _setLoadingState(false);
+    }
+  }
+
+  Future<void> addComment(String postId, String userId, String content) async {
+    try {
+      _setLoadingState(true);
+      final newComment =
+          await _postService.createComment(postId, userId, content);
+
+      // Atualizar a lista de comentários local e também no post correspondente
+      _comments.insert(0, newComment);
+      final postIndex = _posts.indexWhere((post) => post.id == postId);
+      if (postIndex != -1) {
+        _posts[postIndex].comments?.insert(0, newComment);
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError(e.toString());
+      rethrow;
+    } finally {
+      _setLoadingState(false);
+    }
+  }
+
+  void clearComments() {
+    _comments = [];
+    notifyListeners();
+  }
+
   void _setLoadingState(bool loading) {
     _isLoading = loading;
     notifyListeners();
@@ -95,6 +134,11 @@ class PostProvider extends ChangeNotifier {
 
   void _setPostsByUserId(List<Post> posts) {
     _userPosts = posts;
+    notifyListeners();
+  }
+
+  void _setComments(List<Comment> comments) {
+    _comments = comments;
     notifyListeners();
   }
 
