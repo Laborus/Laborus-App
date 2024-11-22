@@ -19,7 +19,7 @@ class SignupWrapper extends StatefulWidget {
 
 class _SignupWrapperState extends State<SignupWrapper> {
   final Map<int, Widget> _steps = {
-    1: DetailsAccountStep(),
+    1: const DetailsAccountStep(),
     2: const InfoInstitutionStep(),
   };
 

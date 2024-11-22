@@ -129,7 +129,7 @@ class CustomBottomAppBar extends StatelessWidget {
     IconData? icon,
     required String label,
     required BuildContext context,
-    bool isActive = false, // Adicionado para verificar se a rota está ativa.
+    bool isActive = false,
     EdgeInsets? padding,
   }) {
     return BottomNavigationBarItem(

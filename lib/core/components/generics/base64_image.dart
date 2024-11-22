@@ -19,7 +19,7 @@ class Base64ImageWidget extends StatelessWidget {
     this.placeholder,
     this.defaultImagePath = 'assets/img/pessoa.png',
     this.fit = BoxFit.cover,
-    this.isCircular = false,
+    this.isCircular = true,
     this.onTap,
   }) : super(key: key);
 

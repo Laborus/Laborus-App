@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:laborus_app/core/data/auth_database.dart';
 import 'package:laborus_app/core/data/local_database.dart';
+import 'package:laborus_app/core/providers/image_update_provider.dart';
+import 'package:laborus_app/core/providers/post_provider.dart';
 import 'package:laborus_app/core/providers/signin_provider.dart';
 import 'package:laborus_app/core/providers/route_stack_provider.dart';
 import 'package:laborus_app/core/providers/settings_provider.dart';
 import 'package:laborus_app/core/providers/signup_provider.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/routes/routes.dart';
+import 'package:laborus_app/core/services/image_picker_service.dart';
+import 'package:laborus_app/core/services/post_service.dart';
 import 'package:laborus_app/core/services/user_service.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +49,20 @@ void main() async {
             userProvider.initializeUser();
             return userProvider;
           },
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ImageUpdateProvider(
+            ImagePickerService(),
+            AuthDatabase(),
+            Provider.of<UserProvider>(
+              context,
+              listen: false,
+            ),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PostProvider(PostService()),
+        ),
       ],
       child: const LaborusAPP(),
     ),

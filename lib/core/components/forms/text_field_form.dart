@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final String? initialValue;
   final MaskTextInputFormatter? maskFormatter;
+  final int? maxLength;
 
   const CustomTextField({
     super.key,
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.initialValue,
     this.maskFormatter,
+    this.maxLength,
   });
 
   @override
@@ -54,6 +56,7 @@ class CustomTextField extends StatelessWidget {
           keyboardType: keyboardType,
           onChanged: onChanged,
           initialValue: initialValue,
+          maxLength: maxLength,
           cursorColor: AppColors.darknessPurple,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.tertiary,
