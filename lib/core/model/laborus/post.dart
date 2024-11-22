@@ -1,4 +1,3 @@
-import 'package:laborus_app/core/model/laborus/comments.dart';
 import 'package:laborus_app/core/model/laborus/user.dart';
 
 class Post {

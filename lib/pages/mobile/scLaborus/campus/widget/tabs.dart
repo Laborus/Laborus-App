@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:laborus_app/core/components/cards/post_card.dart';
 import 'package:laborus_app/core/components/generics/avatar_picture.dart';
 import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
-import 'package:laborus_app/core/model/laborus/post.dart';
 import 'package:laborus_app/core/providers/post_provider.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';

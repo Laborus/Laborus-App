@@ -34,7 +34,7 @@ class PostByUser extends StatelessWidget {
                   const Center(child: CircularProgressIndicator())
                 else if (postProvider.userPosts.isEmpty)
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Center(
                       child: Text(
                         'Nenhum post encontrado.',

@@ -175,15 +175,15 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _buildPostActions(BuildContext context, PostProvider postProvider) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 21),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 21),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               // ButtonLike(post: post),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               // buttonComment(context, post),
             ],
           ),

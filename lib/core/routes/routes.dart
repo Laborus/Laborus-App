@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:laborus_app/core/model/laborus/post.dart';
 import 'package:laborus_app/pages/mobile/logic.dart';
 import 'package:laborus_app/pages/mobile/scAuth/signin/signin.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/campus/campus.dart';
@@ -12,7 +11,6 @@ import 'package:laborus_app/pages/mobile/scSocial/connections/connections_page.d
 import 'package:laborus_app/pages/mobile/scSocial/jobs/jobs_page.dart';
 import 'package:laborus_app/pages/mobile/scSocial/notification/notification_view.dart';
 import 'package:laborus_app/pages/mobile/scIntroduction/onB/onb_page.dart';
-import 'package:laborus_app/pages/mobile/scLaborus/post_full_size/post_full_size_page.dart';
 import 'package:laborus_app/pages/mobile/scSocial/profile/profile.dart';
 import 'package:laborus_app/pages/mobile/scSettings/settings/settings_page.dart';
 import 'package:laborus_app/pages/mobile/scAuth/signup/signup.dart';
