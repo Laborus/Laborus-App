@@ -49,13 +49,13 @@ class PostService {
       final response = await http.get(
         Uri.parse(
           '$_baseUrl/api/posts/campus/$idSchool',
-        ), // URL com o ID da escola
+        ),
         headers: headers,
       );
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = json.decode(response.body);
-        print(jsonData);
+        print('oi $jsonData');
         return jsonData.map((json) => Post.fromJson(json)).toList();
       } else {
         print('Falha ao carregar posts do campus: ${response.body}');

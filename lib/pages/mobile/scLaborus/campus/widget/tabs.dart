@@ -8,18 +8,35 @@ import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
 import 'package:provider/provider.dart';
 
-class FeedTab extends StatelessWidget {
+class FeedTab extends StatefulWidget {
   const FeedTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer2<UserProvider, PostProvider>(
-      builder: (context, userProvider, postProvider, _) {
-        final user = userProvider.user;
-        final schoolId = user?.school ?? '';
+  State<FeedTab> createState() => _FeedTabState();
+}
 
+class _FeedTabState extends State<FeedTab> {
+  @override
+  void initState() {
+    super.initState();
+    final userProvider = Provider.of<UserProvider>(context, listen: false).user;
+    final schoolId = userProvider?.school ?? '';
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PostProvider>(context, listen: false)
+          .loadCampusPosts(schoolId);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PostProvider>(
+      builder: (context, postProvider, _) {
         return RefreshIndicator(
           onRefresh: () async {
+            final userProvider =
+                Provider.of<UserProvider>(context, listen: false).user;
+            final schoolId = userProvider?.school ?? '';
             await postProvider.loadCampusPosts(schoolId);
           },
           child: SingleChildScrollView(

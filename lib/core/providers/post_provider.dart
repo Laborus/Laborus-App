@@ -9,7 +9,6 @@ class PostProvider extends ChangeNotifier {
   List<Post> _posts = [];
   List<Post> _postsCampus = [];
   List<Post> _userPosts = [];
-  List<Post> get userPosts => _userPosts;
   PostProvider(this._postService) {
     loadPosts();
   }
@@ -18,6 +17,7 @@ class PostProvider extends ChangeNotifier {
   String? get error => _error;
   List<Post> get posts => _posts;
   List<Post> get postsCampus => _postsCampus;
+  List<Post> get userPosts => _userPosts;
 
   Future<void> loadPosts() async {
     try {
@@ -39,6 +39,7 @@ class PostProvider extends ChangeNotifier {
       final post = await _postService.getPostsByUserId(userId);
       _setPostsByUserId(post);
     } catch (e) {
+      print(e);
       _userPosts = [];
     } finally {
       _isLoading = false;
@@ -52,6 +53,7 @@ class PostProvider extends ChangeNotifier {
       final posts = await _postService.getPostCampus(idSchool);
       _setPostsCampus(posts);
     } catch (e) {
+      print(e);
       _setError(e.toString());
     } finally {
       _setLoadingState(false);
