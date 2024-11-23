@@ -49,13 +49,13 @@ class PostService {
       final response = await http.get(
         Uri.parse(
           '$_baseUrl/api/posts/campus/$idSchool',
-        ), // URL com o ID da escola
+        ),
         headers: headers,
       );
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = json.decode(response.body);
-        print(jsonData);
+        print('oi $jsonData');
         return jsonData.map((json) => Post.fromJson(json)).toList();
       } else {
         print('Falha ao carregar posts do campus: ${response.body}');
@@ -144,94 +144,41 @@ class PostService {
     }
   }
 
-  // Curtir/Descurtir post
-  Future<void> toggleLikePost(String postId) async {
+  Future<void> likePost(String postId) async {
     try {
       final headers = await _getHeaders();
       final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/like'),
+        Uri.parse('$_baseUrl/api/post/$postId/like'),
         headers: headers,
       );
 
-      if (response.statusCode != 200) {
-        throw Exception(
-            'Falha ao curtir/descurtir post: ${response.statusCode}');
+      if (response.statusCode == 404) {
+        throw Exception('Post não encontrado.');
+      } else if (response.statusCode != 200) {
+        throw Exception('Falha ao curtir post: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Erro ao curtir/descurtir post: $e');
+      throw Exception('Erro ao curtir post: $e');
     }
   }
 
-  // Adicionar comentário
-  Future<Comment> addComment(String postId, String content) async {
+  Future<Comment> createComment(
+      String postId, String userId, String content) async {
     try {
       final headers = await _getHeaders();
+
       final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/comments'),
+        Uri.parse('$_baseUrl/api/comment/$postId'),
         headers: headers,
-        body: json.encode({'content': content}),
+        body: json.encode({'textContent': content}),
       );
 
       if (response.statusCode == 201) {
         return Comment.fromJson(json.decode(response.body));
-      } else {
-        throw Exception(
-            'Falha ao adicionar comentário: ${response.statusCode}');
       }
+      throw Exception('Failed to create comment: ${response.body}');
     } catch (e) {
-      throw Exception('Erro ao adicionar comentário: $e');
-    }
-  }
-
-  // Compartilhar post
-  Future<void> sharePost(String postId) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/share'),
-        headers: headers,
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Falha ao compartilhar post: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Erro ao compartilhar post: $e');
-    }
-  }
-
-  // Salvar post
-  Future<void> savePost(String postId) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/save'),
-        headers: headers,
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Falha ao salvar post: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Erro ao salvar post: $e');
-    }
-  }
-
-  // Reportar post
-  Future<void> reportPost(String postId, String reason) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/report'),
-        headers: headers,
-        body: json.encode({'reason': reason}),
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Falha ao reportar post: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Erro ao reportar post: $e');
+      throw Exception('Error creating comment: $e');
     }
   }
 

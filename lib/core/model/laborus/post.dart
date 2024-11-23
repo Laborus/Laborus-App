@@ -8,13 +8,12 @@ class Post {
   final String text;
   final String media;
   final String visibility;
-  final int likesCount;
-  // final List<Comment> comments;
-  final int reportCount;
-  final List<String> shares;
-  final List<String> likedBy;
+  int likesCount; // Agora mutável para refletir alterações locais
+  final List<Comment>? comments;
+  final List<String>? likedUsers;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final bool commentsEnabled;
   final bool isEdited;
 
   Post({
@@ -22,32 +21,36 @@ class Post {
     required this.title,
     required this.user,
     required this.text,
+    this.commentsEnabled = true,
     this.media = '',
     required this.visibility,
     this.likesCount = 0,
-    // this.comments = const [],
-    this.reportCount = 0,
-    this.shares = const [],
-    this.likedBy = const [],
+    this.likedUsers,
+    this.comments,
     this.createdAt,
     this.updatedAt,
     this.isEdited = false,
   });
 
+  /// Factory para criar o Post a partir de JSON.
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
       id: json['_id'] ?? '',
       title: json['title'] ?? '',
-      user: json['postedBy'] is Map<String, dynamic>
+      user: json['postedBy'] is Map
           ? User.fromJson(json['postedBy'])
           : User(id: json['postedBy'] ?? '', name: 'Usuário Desconhecido'),
       text: json['textContent'] ?? '',
       media: json['image'] ?? '',
       visibility: json['postedOn'] ?? 'Global',
       likesCount: json['likes']?.length ?? 0,
-      reportCount: json['reports']?.length ?? 0,
-      shares: List<String>.from(json['sharedBy'] ?? []),
-      likedBy: List<String>.from(json['likes'] ?? []),
+      commentsEnabled: json['commentsEnabled'] ?? true,
+      comments: (json['comments'] as List?)
+              ?.map((comment) => Comment.fromJson(comment))
+              .toList() ??
+          [],
+      likedUsers:
+          (json['likes'] as List?)?.map((e) => e.toString()).toList() ?? [],
       createdAt:
           DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
       updatedAt:
@@ -56,6 +59,7 @@ class Post {
     );
   }
 
+  /// Método para converter o Post em JSON para envio de dados.
   Map<String, dynamic> toJson() {
     return {
       'textContent': text,
@@ -63,23 +67,23 @@ class Post {
       'title': title,
       'postedOn': visibility,
       'isEdited': isEdited,
+      'commentsEnabled': commentsEnabled,
     };
   }
 
+  /// Método para criar uma cópia do Post com valores alterados.
   Post copyWith({
     String? id,
     User? user,
     String? text,
     String? visibility,
-    int? likesCount,
-    // List<Comment>? comments,
-    int? reportCount,
-    List<String>? shares,
-    List<String>? likedBy,
+    List<Comment>? comments,
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? isEdited,
     String? title,
+    int? likesCount,
+    List<String>? likedUsers,
   }) {
     return Post(
       title: title ?? this.title,
@@ -87,21 +91,29 @@ class Post {
       user: user ?? this.user,
       text: text ?? this.text,
       visibility: visibility ?? this.visibility,
-      likesCount: likesCount ?? this.likesCount,
-      // comments: comments ?? this.comments,
-      reportCount: reportCount ?? this.reportCount,
-      shares: shares ?? this.shares,
-      likedBy: likedBy ?? this.likedBy,
+      comments: comments ?? this.comments,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isEdited: isEdited ?? this.isEdited,
+      likesCount: likesCount ?? this.likesCount,
+      likedUsers: likedUsers ?? this.likedUsers,
     );
   }
 
-  // Métodos úteis
-  bool isLikedByUser(String userId) => likedBy.contains(userId);
-  bool isSharedByUser(String userId) => shares.contains(userId);
+  /// Verifica se o usuário curtiu o post.
+  bool isLikedByUser(String userId) => likedUsers?.contains(userId) ?? false;
 
+  /// Adiciona um like ao Post.
+  void addLike(String userId) {
+    if (!likedUsers!.contains(userId)) likedUsers?.add(userId);
+  }
+
+  /// Remove um like do Post.
+  void removeLike(String userId) {
+    likedUsers?.remove(userId);
+  }
+
+  /// Calcula o tempo desde a criação do post em formato legível.
   String get timeAgo {
     final now = DateTime.now();
     final difference = now.difference(createdAt!);

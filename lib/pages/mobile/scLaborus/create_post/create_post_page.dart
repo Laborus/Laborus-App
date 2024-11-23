@@ -411,11 +411,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         icon: const Icon(Icons.close),
                         onPressed: () => setState(() => selectedImage = null),
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                             Colors.black.withOpacity(0.5),
                           ),
                           foregroundColor:
-                              MaterialStateProperty.all(Colors.white),
+                              WidgetStateProperty.all(Colors.white),
                         ),
                       ),
                     ),
@@ -439,9 +439,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
             IconButton(
               onPressed: _showImagePickerOptions,
               style: const ButtonStyle(
-                padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                padding: WidgetStatePropertyAll(EdgeInsets.zero),
                 backgroundColor:
-                    MaterialStatePropertyAll(AppColors.primaryPurple),
+                    WidgetStatePropertyAll(AppColors.primaryPurple),
               ),
               icon: Icon(
                 Icons.image_outlined,
@@ -455,9 +455,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 setState(() => commentsEnabled = !commentsEnabled);
               },
               style: const ButtonStyle(
-                padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                padding: WidgetStatePropertyAll(EdgeInsets.zero),
                 backgroundColor:
-                    MaterialStatePropertyAll(AppColors.primaryPurple),
+                    WidgetStatePropertyAll(AppColors.primaryPurple),
               ),
               icon: Icon(
                 commentsEnabled

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laborus_app/core/components/cards/button_comment.dart';
+import 'package:laborus_app/core/components/cards/button_like.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:provider/provider.dart';
 import 'package:laborus_app/core/model/laborus/post.dart';
@@ -176,24 +178,12 @@ class PostWidget extends StatelessWidget {
 
   Widget _buildPostActions(BuildContext context, PostProvider postProvider) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 21),
+      padding: EdgeInsets.symmetric(horizontal: 21),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              // ButtonLike(post: post),
-              const SizedBox(width: 16),
-              // buttonComment(context, post),
-            ],
-          ),
-          // Text(
-          //   '${post.likesCount} curtidas · ${post.comments.length} comentários',
-          //   style: TextStyle(
-          //     fontSize: 12,
-          //     color: Theme.of(context).colorScheme.tertiaryContainer,
-          //     fontWeight: FontWeight.w500,
-          //   ),
+          ButtonLike(post: post),
+          if (post.commentsEnabled) ButtonComment(post: post),
         ],
       ),
     );
