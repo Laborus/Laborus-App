@@ -80,9 +80,19 @@ class PostProvider extends ChangeNotifier {
   Future<void> loadComments(String postId) async {
     try {
       _setLoadingState(true);
-      // Os comentários já estão associados ao post?
-      final post = _posts.firstWhere((post) => post.id == postId);
-      if (post == null) throw Exception("Post não encontrado.");
+
+      // Procura o post em todas as listas
+      Post? post = _posts.firstWhere(
+        (post) => post.id == postId,
+        orElse: () => _postsCampus.firstWhere(
+          (post) => post.id == postId,
+          orElse: () => _userPosts.firstWhere(
+            (post) => post.id == postId,
+            orElse: () => throw Exception("Post não encontrado."),
+          ),
+        ),
+      );
+
       _setComments(post.comments ?? []);
     } catch (e) {
       _setError(e.toString());
@@ -97,18 +107,62 @@ class PostProvider extends ChangeNotifier {
       final newComment =
           await _postService.createComment(postId, userId, content);
 
-      // Atualizar a lista de comentários local e também no post correspondente
-      _comments.insert(0, newComment);
-      final postIndex = _posts.indexWhere((post) => post.id == postId);
-      if (postIndex != -1) {
-        _posts[postIndex].comments?.insert(0, newComment);
-        notifyListeners();
+      // Atualiza o comentário em todas as listas onde o post existir
+      void updatePostInList(List<Post> posts) {
+        final postIndex = posts.indexWhere((post) => post.id == postId);
+        if (postIndex != -1) {
+          posts[postIndex].comments?.insert(0, newComment);
+        }
       }
+
+      updatePostInList(_posts);
+      updatePostInList(_postsCampus);
+      updatePostInList(_userPosts);
+
+      _setComments(comments);
+      notifyListeners();
     } catch (e) {
       _setError(e.toString());
       rethrow;
     } finally {
       _setLoadingState(false);
+    }
+  }
+
+  Future<void> toggleLike(String postId, String userId) async {
+    try {
+      // Procura o post em todas as listas e atualiza onde encontrar
+      void updateLikeInList(List<Post> posts) {
+        final postIndex = posts.indexWhere((post) => post.id == postId);
+        if (postIndex != -1 && !posts[postIndex].isLikedByUser(userId)) {
+          _postService.likePost(postId);
+          posts[postIndex].likesCount += 1;
+          posts[postIndex].addLike(userId);
+        }
+      }
+
+      bool postFound = false;
+      if (_posts.any((post) => post.id == postId)) {
+        updateLikeInList(_posts);
+        postFound = true;
+      }
+      if (_postsCampus.any((post) => post.id == postId)) {
+        updateLikeInList(_postsCampus);
+        postFound = true;
+      }
+      if (_userPosts.any((post) => post.id == postId)) {
+        updateLikeInList(_userPosts);
+        postFound = true;
+      }
+
+      if (!postFound) {
+        throw Exception("Post não encontrado.");
+      }
+
+      notifyListeners();
+    } catch (e) {
+      _setError(e.toString());
+      rethrow;
     }
   }
 

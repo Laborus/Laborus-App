@@ -144,21 +144,21 @@ class PostService {
     }
   }
 
-  // Curtir/Descurtir post
-  Future<void> toggleLikePost(String postId) async {
+  Future<void> likePost(String postId) async {
     try {
       final headers = await _getHeaders();
       final response = await http.post(
-        Uri.parse('$_baseUrl/posts/$postId/like'),
+        Uri.parse('$_baseUrl/api/post/$postId/like'),
         headers: headers,
       );
 
-      if (response.statusCode != 200) {
-        throw Exception(
-            'Falha ao curtir/descurtir post: ${response.statusCode}');
+      if (response.statusCode == 404) {
+        throw Exception('Post não encontrado.');
+      } else if (response.statusCode != 200) {
+        throw Exception('Falha ao curtir post: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Erro ao curtir/descurtir post: $e');
+      throw Exception('Erro ao curtir post: $e');
     }
   }
 
