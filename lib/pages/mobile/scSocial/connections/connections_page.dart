@@ -3,8 +3,6 @@ import 'package:laborus_app/core/components/forms/input_search.dart';
 import 'package:laborus_app/core/components/navigation/custom_appbar_bottom.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
-import 'package:laborus_app/pages/mobile/scSocial/connections/widgets/companies_tab.dart';
-import 'package:laborus_app/pages/mobile/scSocial/connections/widgets/institutions_tab.dart';
 import 'package:laborus_app/pages/mobile/scSocial/connections/widgets/students_tab.dart';
 
 class ConnectionsPage extends StatelessWidget {
@@ -67,22 +65,12 @@ class ConnectionsPage extends StatelessWidget {
                 height: 34,
                 text: 'Estudantes',
               ),
-              Tab(
-                height: 34,
-                text: 'Empresas',
-              ),
-              Tab(
-                height: 34,
-                text: 'Instituições',
-              ),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
             StudentsTab(),
-            CompaniesTab(),
-            InstitutionsTab(),
           ],
         ),
       ),
