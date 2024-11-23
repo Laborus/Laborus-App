@@ -9,6 +9,7 @@ import 'package:laborus_app/core/providers/signin_provider.dart';
 import 'package:laborus_app/core/providers/route_stack_provider.dart';
 import 'package:laborus_app/core/providers/settings_provider.dart';
 import 'package:laborus_app/core/providers/signup_provider.dart';
+import 'package:laborus_app/core/providers/student_provider.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/routes/routes.dart';
 import 'package:laborus_app/core/services/image_picker_service.dart';
@@ -68,6 +69,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => JobsProvider(JobsService()),
         ),
+        ChangeNotifierProvider(create: (_) => StudentsProvider()),
       ],
       child: const LaborusAPP(),
     ),

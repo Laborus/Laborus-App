@@ -4,7 +4,8 @@ class PersonModel {
   final String email;
   final String password;
   final String cpf;
-  final String school;
+  final String schoolId;
+  final String? school;
   final String course;
   final List<String> tags;
   final List<String> connections;
@@ -24,10 +25,11 @@ class PersonModel {
     required this.email,
     required this.password,
     required this.cpf,
-    required this.school,
+    required this.schoolId,
     required this.course,
     this.tags = const [],
     this.connections = const [],
+    this.school = 'nao carregou',
     required this.profileImage,
     required this.bannerImage,
     required this.accountStatus,
@@ -44,7 +46,8 @@ class PersonModel {
       email: json['email'],
       password: json['password'],
       cpf: json['cpf'],
-      school: json['school'],
+      schoolId: json['school'],
+      school: json['schoolName'],
       course: json['course'],
       aboutContent: json['aboutContent'],
       tags: List<String>.from(json['tags'] ?? []),
@@ -65,6 +68,7 @@ class PersonModel {
     String? email,
     String? password,
     String? cpf,
+    String? schoolId,
     String? school,
     String? course,
     List<String>? tags,
@@ -84,6 +88,7 @@ class PersonModel {
       email: email ?? this.email,
       password: password ?? this.password,
       cpf: cpf ?? this.cpf,
+      schoolId: schoolId ?? this.schoolId,
       school: school ?? this.school,
       course: course ?? this.course,
       tags: tags ?? this.tags,

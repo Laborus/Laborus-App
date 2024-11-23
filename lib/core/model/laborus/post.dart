@@ -5,6 +5,7 @@ class Post {
   final String? id;
   final User user;
   final String title;
+  final String? postedByModel;
   final String text;
   final String media;
   final String visibility;
@@ -22,6 +23,7 @@ class Post {
     required this.user,
     required this.text,
     this.commentsEnabled = true,
+    this.postedByModel,
     this.media = '',
     required this.visibility,
     this.likesCount = 0,
@@ -40,6 +42,7 @@ class Post {
       user: json['postedBy'] is Map
           ? User.fromJson(json['postedBy'])
           : User(id: json['postedBy'] ?? '', name: 'Usuário Desconhecido'),
+      postedByModel: json['postedByModel'],
       text: json['textContent'] ?? '',
       media: json['image'] ?? '',
       visibility: json['postedOn'] ?? 'Global',

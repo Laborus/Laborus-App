@@ -73,44 +73,46 @@ class PostWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 3),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.school,
-                        size: 12,
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        post.user.school ?? '',
-                        style: TextStyle(
-                          fontSize: 12,
+                  if (post.postedByModel == 'Student') ...[
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.school,
+                          size: 12,
                           color:
                               Theme.of(context).colorScheme.tertiaryContainer,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Roboto',
                         ),
-                      ),
-                      Text(
-                        ' • ',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Roboto',
+                        const SizedBox(width: 5),
+                        Text(
+                          post.user.school ?? '',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Roboto',
+                          ),
                         ),
-                      ),
-                      Text(
-                        post.timeAgo,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                          fontWeight: FontWeight.w400,
+                        Text(
+                          ' • ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Roboto',
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ],
+                  Text(
+                    post.timeAgo,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ],
               ),

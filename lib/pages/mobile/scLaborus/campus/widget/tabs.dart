@@ -20,7 +20,7 @@ class _FeedTabState extends State<FeedTab> {
   void initState() {
     super.initState();
     final userProvider = Provider.of<UserProvider>(context, listen: false).user;
-    final schoolId = userProvider?.school ?? '';
+    final schoolId = userProvider?.schoolId ?? '';
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<PostProvider>(context, listen: false)
