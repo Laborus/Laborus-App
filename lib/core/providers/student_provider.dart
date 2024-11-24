@@ -74,6 +74,8 @@ class StudentsProvider with ChangeNotifier {
   }
 
   Future<void> processBatchConnections() async {
+    await loadStudents();
+
     if (_students.isEmpty) return;
 
     _isLoading = true;

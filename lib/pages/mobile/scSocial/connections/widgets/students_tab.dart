@@ -39,7 +39,6 @@ class StudentsTab extends StatelessWidget {
     // Load students when the widget is first built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<StudentsProvider>().processBatchConnections();
-      context.read<StudentsProvider>().loadStudents();
     });
 
     return SingleChildScrollView(
