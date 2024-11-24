@@ -7,12 +7,14 @@ class ProfileBanner extends StatelessWidget {
   final String? imagePath;
   final String? base64Image;
   final VoidCallback onEdit;
+  final bool isCurrentUser;
 
   const ProfileBanner({
     super.key,
     this.imagePath,
     this.base64Image,
     required this.onEdit,
+    required this.isCurrentUser,
   });
 
   @override
@@ -36,15 +38,16 @@ class ProfileBanner extends StatelessWidget {
           width: double.infinity,
           child: bannerImage,
         ),
-        Positioned(
-          right: 22,
-          bottom: 5,
-          child: EditIcon(
-            onTap: onEdit,
-            color: AppColors.primaryPurple,
-            iconColor: AppColors.neutralsDark[800]!,
+        if (isCurrentUser)
+          Positioned(
+            right: 22,
+            bottom: 5,
+            child: EditIcon(
+              onTap: onEdit,
+              color: AppColors.primaryPurple,
+              iconColor: AppColors.neutralsDark[800]!,
+            ),
           ),
-        ),
       ],
     );
   }

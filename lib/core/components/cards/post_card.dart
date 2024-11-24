@@ -11,6 +11,12 @@ import 'package:laborus_app/core/providers/post_provider.dart';
 
 class PostWidget extends StatelessWidget {
   final Post post;
+  void navigateToProfile(BuildContext context, String userId) {
+    context.pushNamed(
+      'Profile',
+      queryParameters: {'userId': userId},
+    );
+  }
 
   const PostWidget({Key? key, required this.post}) : super(key: key);
 
@@ -55,10 +61,15 @@ class PostWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Base64ImageWidget(
-                base64String: post.user.profileImage ?? '',
-                width: 40,
-                height: 40,
+              GestureDetector(
+                onTap: () {
+                  navigateToProfile(context, post.user.id);
+                },
+                child: Base64ImageWidget(
+                  base64String: post.user.profileImage ?? '',
+                  width: 40,
+                  height: 40,
+                ),
               ),
               const SizedBox(width: 8),
               Column(
@@ -73,16 +84,18 @@ class PostWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 3),
-                  if (post.postedByModel == 'Student') ...[
-                    Row(
-                      children: [
+                  Row(
+                    children: [
+                      if (post.postedByModel == 'Student')
                         Icon(
                           Icons.school,
                           size: 12,
                           color:
                               Theme.of(context).colorScheme.tertiaryContainer,
                         ),
+                      if (post.postedByModel == 'Student')
                         const SizedBox(width: 5),
+                      if (post.postedByModel == 'Student')
                         Text(
                           post.user.school ?? '',
                           style: TextStyle(
@@ -93,6 +106,7 @@ class PostWidget extends StatelessWidget {
                             fontFamily: 'Roboto',
                           ),
                         ),
+                      if (post.postedByModel == 'Student')
                         Text(
                           ' • ',
                           style: TextStyle(
@@ -103,16 +117,16 @@ class PostWidget extends StatelessWidget {
                             fontFamily: 'Roboto',
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                  Text(
-                    post.timeAgo,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
-                      fontWeight: FontWeight.w400,
-                    ),
+                      Text(
+                        post.timeAgo,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color:
+                              Theme.of(context).colorScheme.tertiaryContainer,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

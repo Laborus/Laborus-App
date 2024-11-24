@@ -7,13 +7,13 @@ class ProfilePicture extends StatelessWidget {
   final String imagePath;
   final String base64Image;
   final VoidCallback onEdit;
-
-  const ProfilePicture({
-    super.key,
-    required this.imagePath,
-    required this.base64Image,
-    required this.onEdit,
-  });
+  final bool isCurrentUser;
+  const ProfilePicture(
+      {super.key,
+      required this.imagePath,
+      required this.base64Image,
+      required this.onEdit,
+      required this.isCurrentUser});
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +34,16 @@ class ProfilePicture extends StatelessWidget {
       alignment: Alignment.bottomRight,
       children: [
         profileImage,
-        Positioned(
-          right: -3,
-          bottom: -5,
-          child: EditIcon(
-            onTap: onEdit,
-            color: AppColors.primaryPurple,
-            iconColor: AppColors.neutralsDark[800]!,
+        if (isCurrentUser)
+          Positioned(
+            right: -3,
+            bottom: -5,
+            child: EditIcon(
+              onTap: onEdit,
+              color: AppColors.primaryPurple,
+              iconColor: AppColors.neutralsDark[800]!,
+            ),
           ),
-        ),
       ],
     );
   }

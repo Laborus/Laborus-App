@@ -9,11 +9,19 @@ import 'package:laborus_app/pages/mobile/scSocial/profile/widgets/section_tile.d
 import 'package:provider/provider.dart';
 
 class AboutSection extends StatelessWidget {
-  const AboutSection({super.key});
+  final PersonModel? userArgs;
+
+  const AboutSection({
+    super.key,
+    this.userArgs,
+  });
+
   void showEditModal(BuildContext context) {
+    if (userArgs != null) return; // Prevent editing for other users
+
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Para ajustar à altura do teclado
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -26,7 +34,9 @@ class AboutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    final PersonModel? user = userProvider.user;
+    final PersonModel? displayedUser = userArgs ?? userProvider.user;
+    final bool isCurrentUser = userArgs == null;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 22),
       child: Stack(
@@ -46,44 +56,45 @@ class AboutSection extends StatelessWidget {
                 const SectionTitle(title: 'Sobre'),
                 const SizedBox(height: 8),
                 SectionContent(
-                  content: user?.aboutContent ?? 'teste',
+                  content: displayedUser?.aboutContent ?? '',
                 ),
                 const SizedBox(height: 13),
                 const SectionTitle(title: 'Curso'),
                 const SizedBox(height: 8),
                 SectionContent(
-                  content: user?.course.toLowerCase() ?? 'teste',
+                  content: displayedUser?.course.toLowerCase() ?? '',
                 ),
               ],
             ),
           ),
-          Positioned(
-            top: -5,
-            right: -5,
-            child: editButton(
-              onTap: () => showEditModal(context),
+          if (isCurrentUser)
+            Positioned(
+              top: -5,
+              right: -5,
+              child: editButton(
+                onTap: () => showEditModal(context),
+              ),
             ),
-          ),
         ],
       ),
     );
   }
+}
 
-  Widget editButton({required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: AppColors.primaryPurple,
-          borderRadius: BorderRadius.circular(9999),
-        ),
-        child: Icon(
-          Icons.edit_outlined,
-          size: AppFontSize.medium,
-          color: AppColors.neutralsDark[800]!,
-        ),
+Widget editButton({required VoidCallback onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: AppColors.primaryPurple,
+        borderRadius: BorderRadius.circular(9999),
       ),
-    );
-  }
+      child: Icon(
+        Icons.edit_outlined,
+        size: AppFontSize.medium,
+        color: AppColors.neutralsDark[800]!,
+      ),
+    ),
+  );
 }

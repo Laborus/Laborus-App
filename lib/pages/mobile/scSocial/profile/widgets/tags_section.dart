@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/components/chips/edit_tags.dart';
 import 'package:laborus_app/core/components/chips/profile_tag.dart';
+import 'package:laborus_app/core/model/users/person_model.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/utils/constants/tags.dart';
 import 'package:provider/provider.dart';
 
 class TagsSection extends StatelessWidget {
-  const TagsSection({super.key});
+  final PersonModel? userArgs;
+
+  const TagsSection({
+    super.key,
+    this.userArgs,
+  });
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final userTags = userProvider.user?.tags ?? [];
+    final PersonModel? displayedUser = userArgs ?? userProvider.user;
+    final userTags = displayedUser?.tags ?? [];
+    final bool isCurrentUser = userArgs == null;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -32,7 +40,7 @@ class TagsSection extends StatelessWidget {
               backgroundColor: tagData['color'],
             );
           }).toList(),
-          const EditTags(),
+          if (isCurrentUser) const EditTags(),
         ],
       ),
     );

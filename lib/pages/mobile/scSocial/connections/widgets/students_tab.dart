@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laborus_app/core/components/buttons/text_button_icon.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
@@ -10,6 +11,12 @@ import 'package:provider/provider.dart';
 
 class StudentsTab extends StatelessWidget {
   const StudentsTab({super.key});
+  void navigateToProfile(BuildContext context, String userId) {
+    GoRouter.of(context).pushNamed(
+      'Profile',
+      queryParameters: {'userId': userId},
+    );
+  }
 
   Future<void> _handleConnectionRequest(
       BuildContext context, String studentId) async {
@@ -112,10 +119,13 @@ class StudentsTab extends StatelessWidget {
                   final student = studentsProvider.students[index];
 
                   return GenericListTile(
-                    leading: Base64ImageWidget(
-                      base64String: student.profileImage,
-                      width: 40,
-                      height: 40,
+                    leading: GestureDetector(
+                      onTap: () => navigateToProfile(context, student.id),
+                      child: Base64ImageWidget(
+                        base64String: student.profileImage,
+                        width: 40,
+                        height: 40,
+                      ),
                     ),
                     title: student.name,
                     subtitle: Text(

@@ -4,12 +4,17 @@ import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class InfoProfile extends StatelessWidget {
-  const InfoProfile({super.key});
+  final PersonModel? userArgs;
+
+  const InfoProfile({
+    super.key,
+    this.userArgs,
+  });
 
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    final PersonModel? user = userProvider.user;
+    final PersonModel? displayedUser = userArgs ?? userProvider.user;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -17,7 +22,7 @@ class InfoProfile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            user?.name ?? 'teste',
+            displayedUser?.name ?? '',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onTertiary,
               fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
@@ -34,7 +39,7 @@ class InfoProfile extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Text(
-                user?.school ?? 'teste',
+                displayedUser?.school ?? 'erro',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.tertiaryContainer,
                   fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,

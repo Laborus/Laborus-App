@@ -7,14 +7,20 @@ import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  final PersonModel? userArgs;
+
+  const ProfileHeader({
+    super.key,
+    this.userArgs,
+  });
 
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final ImageUpdateProvider imageUpdateProvider =
         Provider.of<ImageUpdateProvider>(context);
-    final PersonModel? user = userProvider.user;
+    final PersonModel? displayedUser = userArgs ?? userProvider.user;
+    final bool isCurrentUser = userArgs == null;
 
     if (imageUpdateProvider.error != null) {
       Future.delayed(Duration.zero, () {
@@ -35,17 +41,19 @@ class ProfileHeader extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             ProfileBanner(
-              base64Image: user?.bannerImage,
+              base64Image: displayedUser?.bannerImage,
               imagePath: 'assets/img/profile_banner.png',
               onEdit: () => imageUpdateProvider.updateBannerImage(),
+              isCurrentUser: isCurrentUser,
             ),
             Positioned(
               left: 22,
               bottom: -47,
               child: ProfilePicture(
-                base64Image: user?.profileImage ?? '',
+                base64Image: displayedUser?.profileImage ?? '',
                 imagePath: 'assets/img/pessoa.png',
                 onEdit: () => imageUpdateProvider.updateProfileImage(),
+                isCurrentUser: isCurrentUser,
               ),
             ),
           ],

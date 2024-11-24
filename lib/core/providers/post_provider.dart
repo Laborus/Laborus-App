@@ -22,15 +22,24 @@ class PostProvider extends ChangeNotifier {
   List<Post> get postsCampus => _postsCampus;
   List<Post> get userPosts => _userPosts;
   List<Comment> get comments => _comments;
-
   Future<void> loadPosts() async {
+    debugPrint('Starting loadPosts');
     try {
+      debugPrint('Clearing error and setting loading state');
+      _error = null;
       _setLoadingState(true);
+
+      debugPrint('Fetching posts from service');
       final posts = await _postService.getGlobalPosts();
+
+      debugPrint('Posts fetched successfully: ${posts.length} posts');
       _setPosts(posts);
     } catch (e) {
+      debugPrint('Error loading posts: $e');
+      _setPosts([]);
       _setError(e.toString());
     } finally {
+      debugPrint('Finishing loadPosts');
       _setLoadingState(false);
     }
   }
