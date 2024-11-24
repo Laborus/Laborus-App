@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laborus_app/core/components/cards/button_comment.dart';
 import 'package:laborus_app/core/components/cards/button_like.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
+import 'package:laborus_app/core/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:laborus_app/core/model/laborus/post.dart';
 import 'package:laborus_app/core/components/generics/readmore.dart';
@@ -11,12 +12,6 @@ import 'package:laborus_app/core/providers/post_provider.dart';
 
 class PostWidget extends StatelessWidget {
   final Post post;
-  void navigateToProfile(BuildContext context, String userId) {
-    context.pushNamed(
-      'Profile',
-      queryParameters: {'userId': userId},
-    );
-  }
 
   const PostWidget({Key? key, required this.post}) : super(key: key);
 
@@ -61,15 +56,10 @@ class PostWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              GestureDetector(
-                onTap: () {
-                  navigateToProfile(context, post.user.id);
-                },
-                child: Base64ImageWidget(
-                  base64String: post.user.profileImage ?? '',
-                  width: 40,
-                  height: 40,
-                ),
+              Base64ImageWidget(
+                base64String: post.user.profileImage ?? '',
+                width: 40,
+                height: 40,
               ),
               const SizedBox(width: 8),
               Column(

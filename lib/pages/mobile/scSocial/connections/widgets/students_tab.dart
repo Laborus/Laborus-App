@@ -4,6 +4,7 @@ import 'package:laborus_app/core/components/buttons/text_button_icon.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
 import 'package:laborus_app/core/components/list/generic_list_tile.dart';
+import 'package:laborus_app/core/model/users/person_model.dart';
 import 'package:laborus_app/core/providers/student_provider.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
@@ -11,10 +12,10 @@ import 'package:provider/provider.dart';
 
 class StudentsTab extends StatelessWidget {
   const StudentsTab({super.key});
-  void navigateToProfile(BuildContext context, String userId) {
+  void _navigateToProfile(BuildContext context, PersonModel student) {
     GoRouter.of(context).pushNamed(
       'Profile',
-      queryParameters: {'userId': userId},
+      extra: student,
     );
   }
 
@@ -45,7 +46,7 @@ class StudentsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     // Load students when the widget is first built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<StudentsProvider>().processBatchConnections();
+      context.read<StudentsProvider>().loadStudents();
     });
 
     return SingleChildScrollView(
@@ -120,7 +121,7 @@ class StudentsTab extends StatelessWidget {
 
                   return GenericListTile(
                     leading: GestureDetector(
-                      onTap: () => navigateToProfile(context, student.id),
+                      onTap: () => _navigateToProfile(context, student),
                       child: Base64ImageWidget(
                         base64String: student.profileImage,
                         width: 40,

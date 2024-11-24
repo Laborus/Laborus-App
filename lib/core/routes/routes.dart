@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:laborus_app/core/components/generics/loading.dart';
 import 'package:laborus_app/core/model/users/person_model.dart';
-import 'package:laborus_app/core/services/user_service.dart';
 import 'package:laborus_app/pages/mobile/logic.dart';
 import 'package:laborus_app/pages/mobile/scAuth/signin/signin.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/campus/campus.dart';
@@ -152,42 +150,9 @@ final _router = GoRouter(
             GoRoute(
               path: '/profile',
               name: 'Profile',
-              redirect: (context, state) {
-                final userId = state.uri.queryParameters['userId'];
-                if (userId == null) {
-                  return '/';
-                }
-                return null;
-              },
               builder: (context, state) {
-                final userId = state.uri.queryParameters['userId']!;
-                return FutureBuilder<PersonModel>(
-                  future: UserService().getUserById(userId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const LoadingPage();
-                    }
-
-                    if (snapshot.hasError) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              'Erro ao carregar usuário: ${snapshot.error}'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                      GoRouter.of(context).go('/');
-                      return const LoadingPage();
-                    }
-
-                    if (!snapshot.hasData) {
-                      GoRouter.of(context).go('/');
-                      return const LoadingPage();
-                    }
-
-                    return ProfilePage(userArgs: snapshot.data!);
-                  },
-                );
+                final personModel = state.extra as PersonModel?;
+                return ProfilePage(userArgs: personModel);
               },
             ),
           ],

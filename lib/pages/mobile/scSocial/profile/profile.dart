@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: 13),
           AboutSection(userArgs: userArgs),
           const SizedBox(height: 13),
-          PostByUser(userArgs: userArgs)
+          if (userArgs == null) PostByUser(userArgs: userArgs)
         ],
       ),
     );
