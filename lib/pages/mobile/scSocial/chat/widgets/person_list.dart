@@ -18,7 +18,7 @@ class PersonList extends StatelessWidget {
       People(
         id: 'lia',
         name: 'LIA - Assistente Virtual',
-        image: 'assets/images/lia_avatar.png',
+        image: 'assets/img/LIA.jpeg',
         lastVisited: DateTime.now(),
         viewed: true,
       ),

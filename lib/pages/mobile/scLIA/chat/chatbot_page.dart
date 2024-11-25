@@ -44,7 +44,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
               return Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/lia_avatar.png'),
+                    backgroundImage: AssetImage('assets/img/LIA.jpeg'),
                     radius: 20,
                   ),
                   const SizedBox(width: 8),
