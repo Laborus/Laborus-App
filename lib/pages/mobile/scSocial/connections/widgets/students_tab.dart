@@ -36,7 +36,7 @@ class StudentsTab extends StatelessWidget {
         SnackBar(
           content: Text('Erro ao enviar solicitação: $e'),
           backgroundColor: Colors.red,
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         ),
       );
     }
@@ -44,9 +44,8 @@ class StudentsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Load students when the widget is first built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<StudentsProvider>().loadStudents();
+      context.read<StudentsProvider>().processBatchConnections();
     });
 
     return SingleChildScrollView(

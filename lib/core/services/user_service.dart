@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:laborus_app/core/data/auth_database.dart';
+import 'package:laborus_app/core/model/social/school_social.dart';
 import 'package:laborus_app/core/model/users/person_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +21,21 @@ class UserService {
       throw Exception(responseData['message']);
     } catch (e) {
       throw Exception('Falha ao buscar usuário: ${e.toString()}');
+    }
+  }
+
+  Future<SchoolSocial> getSchoolById(String schoolId) async {
+    try {
+      final response =
+          await http.get(Uri.parse('$_baseUrl/api/schools/$schoolId'));
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      if (responseData['status'] == 'SUCCESS') {
+        return SchoolSocial.fromJson(responseData['data']);
+      }
+      throw Exception(responseData['message']);
+    } catch (e) {
+      throw Exception('Falha ao buscar escola: ${e.toString()}');
     }
   }
 

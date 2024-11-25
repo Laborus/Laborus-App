@@ -16,12 +16,7 @@ class CampusScreen extends StatelessWidget {
         appBar: AppBar(
           leadingWidth: double.infinity,
           toolbarHeight: 100,
-          leading: const InstitutionInfo(
-            institutionName: "Fatec Carapicuíba",
-            location: "Carapicuíba | SP",
-            students: "3.232",
-            onlineStudents: "321",
-          ),
+          leading: const InstitutionInfo(),
           bottom: TabBar(
             dividerColor: Theme.of(context).colorScheme.primary,
             indicatorColor: AppColors.primaryPurple,
@@ -53,7 +48,7 @@ class CampusScreen extends StatelessWidget {
               ),
               Tab(
                 height: 34,
-                text: 'Seguindo',
+                text: 'Alertas',
               ),
             ],
           ),

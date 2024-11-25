@@ -6,7 +6,7 @@ class StudentsProvider with ChangeNotifier {
   final StudentsService _studentsService = StudentsService();
   List<PersonModel> _students = [];
   List<String> _connections = [];
-  List<String> _pendingRequests = [];
+  final List<String> _pendingRequests = [];
   bool _isLoading = false;
   String? _error;
 

@@ -5,6 +5,7 @@ import 'package:laborus_app/core/data/local_database.dart';
 import 'package:laborus_app/core/providers/image_update_provider.dart';
 import 'package:laborus_app/core/providers/jobs_provider.dart';
 import 'package:laborus_app/core/providers/post_provider.dart';
+import 'package:laborus_app/core/providers/school_provider.dart';
 import 'package:laborus_app/core/providers/signin_provider.dart';
 import 'package:laborus_app/core/providers/route_stack_provider.dart';
 import 'package:laborus_app/core/providers/settings_provider.dart';
@@ -15,6 +16,7 @@ import 'package:laborus_app/core/routes/routes.dart';
 import 'package:laborus_app/core/services/image_picker_service.dart';
 import 'package:laborus_app/core/services/jobs_service.dart';
 import 'package:laborus_app/core/services/post_service.dart';
+import 'package:laborus_app/core/services/school_service.dart';
 import 'package:laborus_app/core/services/user_service.dart';
 import 'package:provider/provider.dart';
 
@@ -70,6 +72,12 @@ void main() async {
           create: (_) => JobsProvider(JobsService()),
         ),
         ChangeNotifierProvider(create: (_) => StudentsProvider()),
+        ChangeNotifierProvider(
+          create: (context) => SchoolProvider(
+            SchoolService(),
+            AuthDatabase(),
+          ),
+        ),
       ],
       child: const LaborusAPP(),
     ),

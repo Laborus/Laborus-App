@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:laborus_app/core/components/cards/button_comment.dart';
 import 'package:laborus_app/core/components/cards/button_like.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
-import 'package:laborus_app/core/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:laborus_app/core/model/laborus/post.dart';
 import 'package:laborus_app/core/components/generics/readmore.dart';
@@ -184,7 +183,7 @@ class PostWidget extends StatelessWidget {
 
   Widget _buildPostActions(BuildContext context, PostProvider postProvider) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 21),
+      padding: const EdgeInsets.symmetric(horizontal: 21),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
