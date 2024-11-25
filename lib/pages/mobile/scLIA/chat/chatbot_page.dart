@@ -89,11 +89,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
                       },
                     ),
                   ),
-                  if (chatProvider.isLoading)
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
-                    ),
                   Container(
                     color: Theme.of(context).colorScheme.primary,
                     padding: EdgeInsets.only(
