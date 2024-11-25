@@ -5,6 +5,7 @@ import 'package:laborus_app/pages/mobile/logic.dart';
 import 'package:laborus_app/pages/mobile/scAuth/signin/signin.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/campus/campus.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/challenge/challenges_page.dart';
+import 'package:laborus_app/pages/mobile/scLIA/chat/chatbot_page.dart';
 import 'package:laborus_app/pages/mobile/scSocial/chat/chat_page.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/create_post/create_post_page.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/feed/feed_page.dart';
@@ -77,6 +78,13 @@ final _router = GoRouter(
       name: 'Signup',
       builder: (context, state) {
         return const SignupWrapper();
+      },
+    ),
+    GoRoute(
+      path: '/chat/LIA',
+      name: 'LIA',
+      builder: (context, state) {
+        return const ChatbotPage();
       },
     ),
     StatefulShellRoute.indexedStack(
@@ -204,7 +212,7 @@ final _router = GoRouter(
               },
             ),
           ],
-        )
+        ),
       ],
     )
   ],

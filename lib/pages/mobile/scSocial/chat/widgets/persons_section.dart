@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
-import 'package:laborus_app/pages/mobile/scSocial/chat/data/dummy_data.dart';
 import 'package:laborus_app/pages/mobile/scSocial/chat/widgets/person_list.dart';
 
 class PersonsSection extends StatelessWidget {
@@ -17,20 +16,20 @@ class PersonsSection extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'Conexões',
+                  'Conversas',
                   style: TextStyle(
                       fontSize: AppFontSize.xxLarge,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.onTertiary),
                 ),
-                const SizedBox(width: 3),
-                Text(
-                  '${peoples.length}',
-                  style: TextStyle(
-                      fontSize: AppFontSize.xxLarge,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.tertiary),
-                ),
+                // const SizedBox(width: 3),
+                // Text(
+                //   '${peoples.length}',
+                //   style: TextStyle(
+                //       fontSize: AppFontSize.xxLarge,
+                //       fontWeight: FontWeight.bold,
+                //       color: Theme.of(context).colorScheme.tertiary),
+                // ),
               ],
             ),
           ),

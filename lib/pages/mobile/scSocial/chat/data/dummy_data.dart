@@ -3,48 +3,56 @@ import 'package:laborus_app/core/model/social/people.dart';
 
 List<People> peoples = [
   People(
+    id: '1',
     name: 'John Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
     viewed: true,
   ),
   People(
+    id: '1',
     name: 'John Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
     viewed: true,
   ),
   People(
+    id: '1',
     name: 'John Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
     viewed: true,
   ),
   People(
+    id: '1',
     name: 'John Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
     viewed: true,
   ),
   People(
+    id: '1',
     name: 'Calvo Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
     viewed: false,
   ),
   People(
+    id: '1',
     name: 'John Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
     viewed: false,
   ),
   People(
+    id: '1',
     name: 'John Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
     viewed: false,
   ),
   People(
+    id: '1',
     name: 'Calvo Doe',
     image: 'assets/img/profile.jpg',
     lastVisited: DateTime.now(),
