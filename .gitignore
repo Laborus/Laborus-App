@@ -45,3 +45,10 @@ app.*.map.json
 
 # envs
 *.env
+
+#firebase
+/.firebase
+firebase.json
+android/app/google-services.json
+lib/firebase_options.dart
+.firebaserc

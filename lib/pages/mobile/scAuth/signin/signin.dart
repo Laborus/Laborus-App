@@ -141,34 +141,6 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                     ),
                   ),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Esqueceu a senha?',
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.onTertiary,
-                              fontWeight: FontWeight.w500,
-                            ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          AppRouteEnum currentPath = AppRouteEnum.challenges;
-                          String routePath = currentPath.name;
-                          context.push(routePath);
-                        },
-                        child: Text(
-                          'Altere aqui.',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: AppColors.mediumPurple,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),

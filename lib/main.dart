@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:laborus_app/core/data/auth_database.dart';
 import 'package:laborus_app/core/data/local_database.dart';
+import 'package:laborus_app/core/providers/chat_provider.dart';
 import 'package:laborus_app/core/providers/image_update_provider.dart';
 import 'package:laborus_app/core/providers/jobs_provider.dart';
 import 'package:laborus_app/core/providers/post_provider.dart';
@@ -13,19 +15,23 @@ import 'package:laborus_app/core/providers/signup_provider.dart';
 import 'package:laborus_app/core/providers/student_provider.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/routes/routes.dart';
+import 'package:laborus_app/core/services/chat_service.dart';
 import 'package:laborus_app/core/services/image_picker_service.dart';
 import 'package:laborus_app/core/services/jobs_service.dart';
 import 'package:laborus_app/core/services/post_service.dart';
 import 'package:laborus_app/core/services/school_service.dart';
 import 'package:laborus_app/core/services/user_service.dart';
+import 'package:laborus_app/firebase_options.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await LocalDatabase.init();
   await dotenv.load(fileName: ".env");
-
+  final apiKey = dotenv.env['GENERATIVE_API_KEY'];
   runApp(
     MultiProvider(
       providers: [
@@ -76,6 +82,11 @@ void main() async {
           create: (context) => SchoolProvider(
             SchoolService(),
             AuthDatabase(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChatProvider(
+            ChatService(apiKey!),
           ),
         ),
       ],
