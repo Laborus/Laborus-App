@@ -40,11 +40,11 @@ class CampusScreen extends StatelessWidget {
             tabs: const [
               Tab(
                 height: 34,
-                text: 'Todas',
+                text: 'Feed',
               ),
               Tab(
                 height: 34,
-                text: 'Meu Campus',
+                text: 'Discussão',
               ),
               Tab(
                 height: 34,
