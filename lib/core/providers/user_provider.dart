@@ -114,9 +114,7 @@ class UserProvider extends ChangeNotifier {
   Future<void> destroyUserData() async {
     try {
       _user = null;
-
       _error = null;
-
       _isLoading = false;
 
       await _authDatabase.clearAuthData();

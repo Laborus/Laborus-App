@@ -117,17 +117,17 @@ class ProfileModal {
                 _navigateAndCloseModal(context, path);
               },
             ),
-            _buildMenuItem(
-              context,
-              icon: Icons.logout,
-              label: 'Sair da conta',
-              textColor: AppColors.red,
-              backgroundColor: const Color.fromARGB(255, 243, 187, 217),
-              onTap: () {
-                AppRouteEnum path = AppRouteEnum.welcome;
-                GoRouter.of(context).clearStackAndNavigate(context, path.name);
-              },
-            ),
+            _buildMenuItem(context,
+                icon: Icons.logout,
+                label: 'Sair da conta',
+                textColor: AppColors.red,
+                backgroundColor: const Color.fromARGB(255, 243, 187, 217),
+                onTap: () async {
+              await Provider.of<UserProvider>(context, listen: false)
+                  .destroyUserData();
+              GoRouter.of(context)
+                  .clearStackAndNavigate(context, AppRouteEnum.welcome.name);
+            }),
           ],
         );
       },
