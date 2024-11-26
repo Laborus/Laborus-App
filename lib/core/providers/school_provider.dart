@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/data/auth_database.dart';
+import 'package:laborus_app/core/model/social/discussion.dart';
 import 'package:laborus_app/core/model/social/alert.dart';
 import 'package:laborus_app/core/model/social/school_social.dart';
 import 'package:laborus_app/core/services/school_service.dart';
@@ -19,6 +20,23 @@ class SchoolProvider extends ChangeNotifier {
   SchoolSocial? get school => _school;
   List<Alert> _alerts = [];
   List<Alert> get alerts => _alerts;
+
+  List<Discussion> _discussions = [];
+  List<Discussion> get discussions => _discussions;
+
+  Future<void> fetchDiscussions(String schoolId) async {
+    try {
+      _setLoadingState(true);
+      final fetchedDiscussions =
+          await _userService.getDiscussionsBySchoolId(schoolId);
+      _discussions = fetchedDiscussions;
+      notifyListeners();
+    } catch (e) {
+      _setError('Falha ao buscar discussões: ${e.toString()}');
+    } finally {
+      _setLoadingState(false);
+    }
+  }
 
   Future<void> fetchAlerts(String schoolId) async {
     try {

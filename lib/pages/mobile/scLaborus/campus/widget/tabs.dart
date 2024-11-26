@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/components/cards/post_card.dart';
 import 'package:laborus_app/core/components/generics/avatar_picture.dart';
+import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
+import 'package:laborus_app/core/providers/discussion_provider.dart';
 import 'package:laborus_app/core/providers/post_provider.dart';
 import 'package:laborus_app/core/providers/school_provider.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
+import 'package:laborus_app/pages/mobile/scLaborus/campus/widget/create_discussion.dart';
 import 'package:provider/provider.dart';
 
 class FeedTab extends StatefulWidget {
@@ -83,150 +86,258 @@ class _FeedTabState extends State<FeedTab> {
   }
 }
 
-class DiscussionTab extends StatelessWidget {
+class DiscussionTab extends StatefulWidget {
   const DiscussionTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).padding.bottom,
-        top: MediaQuery.of(context).padding.top,
+  State<DiscussionTab> createState() => _DiscussionTabState();
+}
+
+class _DiscussionTabState extends State<DiscussionTab> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final discussionProvider =
+          Provider.of<DiscussionProvider>(context, listen: false);
+      if (userProvider.user != null) {
+        discussionProvider.fetchDiscussions(userProvider.user!.schoolId);
+      }
+    });
+  }
+
+  void _showCreateDiscussionModal() {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height * 0.5,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GenericListBuilderSeparated(
-            padding: const EdgeInsets.only(top: 13),
-            itemCount: 1,
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return ListTile(
-                tileColor: Theme.of(context).colorScheme.primary,
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text(
-                  'Quando a Fatec entregará os ingressos para a Campus Party - CPBR16?',
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => CreateDiscussionModal(
+        schoolId: userProvider.user!.schoolId,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<DiscussionProvider>(
+      builder: (context, discussionProvider, child) {
+        if (discussionProvider.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (discussionProvider.error != null) {
+          return Center(
+            child: Text(
+              'Erro: ${discussionProvider.error}',
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
+        }
+
+        if (discussionProvider.discussions.isEmpty) {
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Nenhuma discussão disponível',
                   style: TextStyle(
-                    fontSize: AppFontSize.medium,
+                    fontSize: AppFontSize.large,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onTertiary,
                   ),
                 ),
-                horizontalTitleGap: 12,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 22, vertical: 5),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'tags',
-                          style: TextStyle(
-                            fontSize: AppFontSize.small,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(width: 3),
-                        Text(
-                          'tags',
-                          style: TextStyle(
-                            fontSize: AppFontSize.small,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(width: 3),
-                        Text(
-                          '•',
-                          style: TextStyle(
-                            fontSize: AppFontSize.small,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(width: 3),
-                        const Text(
-                          '1 hora atrás',
-                          style: TextStyle(
-                            fontSize: AppFontSize.small,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primaryPurple,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 13,
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.check,
-                            color: AppColors.neutralsDark[800],
-                            size: AppFontSize.xxxLarge,
-                          ),
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.zero,
-                          style: const ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(
-                              AppColors.green,
-                            ),
-                          ),
-                          constraints: BoxConstraints.tight(const Size(28, 28)),
-                          onPressed: () => {},
-                        ),
-                        TextButton.icon(
-                          label: Text(
-                            '21',
-                            style: TextStyle(
-                              fontSize: AppFontSize.medium,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer,
-                            ),
-                          ),
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.chat_bubble_outline,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                            size: AppFontSize.xxLarge,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                IconButton(
+                  onPressed: _showCreateDiscussionModal,
+                  icon: const Icon(Icons.add),
                 ),
-                trailing: const Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    AvatarPicture(
-                      size: 40,
-                      imagePath: 'assets/img/profile.jpg',
-                    )
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 1);
-            },
+              ],
+            ),
+          );
+        }
+
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).padding.bottom,
+            top: MediaQuery.of(context).padding.top,
           ),
-        ],
-      ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Discussões',
+                      style: TextStyle(
+                        fontSize: AppFontSize.large,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onTertiary,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: _showCreateDiscussionModal,
+                      icon: const Icon(Icons.add),
+                    ),
+                  ],
+                ),
+              ),
+              GenericListBuilderSeparated(
+                padding: const EdgeInsets.only(top: 13),
+                itemCount: discussionProvider.discussions.length,
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final discussion = discussionProvider.discussions[index];
+                  return ListTile(
+                    tileColor: Theme.of(context).colorScheme.primary,
+                    titleAlignment: ListTileTitleAlignment.center,
+                    title: Text(
+                      discussion.title,
+                      style: TextStyle(
+                        fontSize: AppFontSize.medium,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onTertiary,
+                      ),
+                    ),
+                    horizontalTitleGap: 12,
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 22, vertical: 5),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            // You might want to add tags logic here
+                            Text(
+                              discussion
+                                  .description, // Replace with actual tags if available
+                              style: TextStyle(
+                                fontSize: AppFontSize.small,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 3),
+                            Text(
+                              '•',
+                              style: TextStyle(
+                                fontSize: AppFontSize.small,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 3),
+                            Text(
+                              _calculateTimeAgo(discussion.createdAt),
+                              style: const TextStyle(
+                                fontSize: AppFontSize.small,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryPurple,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 13,
+                        ),
+                        Row(
+                          children: [
+                            if (discussion.isClosed)
+                              Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.zero,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.green,
+                                  shape: BoxShape.circle,
+                                ),
+                                constraints:
+                                    BoxConstraints.tight(const Size(28, 28)),
+                                child: Icon(
+                                  Icons.check,
+                                  color: AppColors.neutralsDark[800],
+                                  size: AppFontSize.xxxLarge,
+                                ),
+                              ),
+                            TextButton.icon(
+                              label: Text(
+                                discussion.comments.length
+                                    .toString(), // Number of comments
+                                style: TextStyle(
+                                  fontSize: AppFontSize.medium,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .tertiaryContainer,
+                                ),
+                              ),
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.chat_bubble_outline,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                size: AppFontSize.xxLarge,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Base64ImageWidget(
+                          height: 40,
+                          width: 40,
+                          base64String: discussion.postedBy.photo ?? '',
+                        )
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 1);
+                },
+              )
+            ],
+          ),
+        );
+      },
     );
+  }
+
+  String _calculateTimeAgo(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
+
+    if (difference.inHours < 1) {
+      return '${difference.inMinutes} min atrás';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} hora${difference.inHours > 1 ? 's' : ''} atrás';
+    } else {
+      return '${difference.inDays} dia${difference.inDays > 1 ? 's' : ''} atrás';
+    }
   }
 }
 

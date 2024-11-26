@@ -22,7 +22,6 @@ class PersonList extends StatelessWidget {
         lastVisited: DateTime.now(),
         viewed: true,
       ),
-      ...peoples,
     ];
 
     return GenericListBuilderSeparated(

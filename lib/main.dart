@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:laborus_app/core/data/auth_database.dart';
 import 'package:laborus_app/core/data/local_database.dart';
 import 'package:laborus_app/core/providers/chat_provider.dart';
+import 'package:laborus_app/core/providers/discussion_provider.dart';
 import 'package:laborus_app/core/providers/image_update_provider.dart';
 import 'package:laborus_app/core/providers/jobs_provider.dart';
 import 'package:laborus_app/core/providers/post_provider.dart';
@@ -87,6 +88,12 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => ChatProvider(
             ChatService(apiKey!),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DiscussionProvider(
+            SchoolService(),
+            AuthDatabase(),
           ),
         ),
       ],

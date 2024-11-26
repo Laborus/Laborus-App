@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:provider/provider.dart';
-import 'package:laborus_app/core/components/generics/avatar_picture.dart';
-import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/providers/school_provider.dart';
 import 'package:laborus_app/core/providers/user_provider.dart';
 
