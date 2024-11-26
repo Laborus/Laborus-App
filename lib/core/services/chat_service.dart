@@ -1,5 +1,6 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:laborus_app/core/data/global_vars.dart';
 import 'package:laborus_app/core/model/chat/chat.dart';
 import 'package:laborus_app/core/model/chat/chat_messages.dart';
 import 'package:uuid/uuid.dart';
@@ -17,8 +18,7 @@ class ChatService {
             topP: 0.9,
             temperature: 0.8,
           ),
-          systemInstruction: Content.system(
-              'Você é a LIA, a assistente virtual da Laborus, Ajude os estudantes com informações sobre a plataforma Laborus, seus benefícios, funcionalidades e como utilizá-la. '),
+          systemInstruction: Content.system(AppGlobals.liaTraine),
         );
 
   Future<Chat> createChat(String userId) async {
