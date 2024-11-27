@@ -6,10 +6,10 @@ import 'package:laborus_app/core/model/responses/job_response.dart';
 class JobsService {
   final String baseUrl = dotenv.env['API_URL']!;
 
-  Future<JobsResponse> getJobsByType(String jobType) async {
+  Future<JobsResponse> getJobsByType() async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/api/jobs/by-type?jobType=$jobType'),
+        Uri.parse('$baseUrl/api/jobs'),
       );
 
       if (response.statusCode == 200) {

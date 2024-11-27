@@ -62,5 +62,22 @@ Com a Laborus, você pode expandir sua rede de contatos ao se conectar com outro
 5. **Colaboração:** Crie grupos de estudo e participe de discussões no Campus para enriquecer seu aprendizado.
 
 A Laborus transforma sua experiência acadêmica em algo mais colaborativo, produtivo e conectado com o mercado. Venha fazer parte desta comunidade e impulsione sua carreira desde o início da sua jornada educacional!
-  """;
+Anúncios estratégicos na plataforma.
+Intermediação nas parcerias entre instituições de ensino e empresas.
+Destaque/impulsionamento no alcance de publicações, perfis, vagas e desafios.
+
+Além disso, contamos com planos de assinaturas na plataforma, com benefícios e acessos exclusivos.
+Assinatura simples: 
+•	Livre de anúncios. (todos os tipos de usuários).
+•	Parceria com empresas e instituições.
+
+Assinatura premium/pro: 
+•	Livre de anúncios e benefícios mensais para impulsionamento no alcance de publicações, perfis, vagas e desafios.  (todos os tipos de usuários).
+•	Além de maiores chances de parcerias na plataforma, por meio da priorização dos usuários premium/pro. (empresas e instituições de ensino).
+•	Acesso a Assistente LIA a inteligência artificial da laborus
+
+
+Laborus é mais que uma plataforma. 
+A Laborus é a integração e expansão de conhecimentos, oportunidades e networking que conquistamos nos ambientes acadêmicos e profissionais. 
+Venham fazer parte deste projeto vocês quiseram ter a oportunidade de terem um dia, mas por devaneios da vida não conseguiram, mas agora têm a oportunidade de se unirem. Conecte-se agora mesmo e comece a construir o futuro que você merece! Baixe o app ou acesse pelo navegador. Laborus: onde sua jornada começa e nunca para. """;
 }

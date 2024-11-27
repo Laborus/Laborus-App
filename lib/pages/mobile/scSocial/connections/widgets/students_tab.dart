@@ -6,6 +6,7 @@ import 'package:laborus_app/core/components/list/generic_list_builder_separated.
 import 'package:laborus_app/core/components/list/generic_list_tile.dart';
 import 'package:laborus_app/core/model/users/person_model.dart';
 import 'package:laborus_app/core/providers/student_provider.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,8 @@ class StudentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<StudentsProvider>().processBatchConnections();
+      final user = context.read<UserProvider>().user;
+      context.read<StudentsProvider>().loadStudents(user?.id ?? '');
     });
 
     return SingleChildScrollView(
@@ -89,7 +91,11 @@ class StudentsTab extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
-                          onPressed: () => studentsProvider.loadStudents(),
+                          onPressed: () {
+                            final user = context.read<UserProvider>().user;
+
+                            studentsProvider.loadStudents(user?.id ?? '');
+                          },
                           child: const Text('Tentar Novamente'),
                         ),
                       ],

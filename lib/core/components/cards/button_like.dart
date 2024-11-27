@@ -14,7 +14,7 @@ class ButtonLike extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final postProvider = Provider.of<PostProvider>(context, listen: false);
-    final userId = userProvider.user!.id;
+    final userId = userProvider.user?.id ?? '';
 
     final liked = post.isLikedByUser(userId);
 

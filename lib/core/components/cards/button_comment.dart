@@ -26,13 +26,13 @@ class ButtonComment extends StatelessWidget {
 
       showModalBottomSheet(
         showDragHandle: true,
-        isScrollControlled: true,
         enableDrag: true,
+        isScrollControlled: true,
+        useSafeArea: true,
         useRootNavigator: true,
         context: context,
         constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height * .3,
-          maxHeight: MediaQuery.of(context).size.height * .8,
+          minHeight: MediaQuery.of(context).size.height * .5,
         ),
         builder: (BuildContext context) {
           final comments = postProvider.comments;
@@ -141,29 +141,6 @@ class ButtonComment extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(comment.author.name),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.school,
-                                          size: 12,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiaryContainer,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          comment.author.school ?? '',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiaryContainer,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: 'Roboto',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                     const SizedBox(height: 16)
                                   ],
                                 ),

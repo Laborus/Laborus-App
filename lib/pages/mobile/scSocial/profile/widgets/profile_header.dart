@@ -35,28 +35,33 @@ class ProfileHeader extends StatelessWidget {
     }
 
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: [
         if (imageUpdateProvider.isLoading) const LinearProgressIndicator(),
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            ProfileBanner(
-              base64Image: displayedUser?.bannerImage,
-              imagePath: 'assets/img/profile_banner.png',
-              onEdit: () => imageUpdateProvider.updateBannerImage(),
-              isCurrentUser: isCurrentUser,
-            ),
-            Positioned(
-              left: 22,
-              bottom: -47,
-              child: ProfilePicture(
-                base64Image: displayedUser?.profileImage ?? '',
-                imagePath: 'assets/img/pessoa.png',
-                onEdit: () => imageUpdateProvider.updateProfileImage(),
+        Container(
+          height: 200,
+          child: Stack(
+            fit: StackFit.expand,
+            clipBehavior: Clip.none,
+            children: [
+              ProfileBanner(
+                base64Image: displayedUser?.bannerImage,
+                imagePath: 'assets/img/profile_banner.png',
+                onEdit: () => imageUpdateProvider.updateBannerImage(),
                 isCurrentUser: isCurrentUser,
               ),
-            ),
-          ],
+              Positioned(
+                left: 22,
+                bottom: -47,
+                child: ProfilePicture(
+                  base64Image: displayedUser?.profileImage ?? '',
+                  imagePath: 'assets/img/pessoa.png',
+                  onEdit: () => imageUpdateProvider.updateProfileImage(),
+                  isCurrentUser: isCurrentUser,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );

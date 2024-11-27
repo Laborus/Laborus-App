@@ -17,13 +17,13 @@ class JobsProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  Future<void> fetchJobsByType(String jobType) async {
+  Future<void> fetchJobs() async {
     try {
       _isLoading = true;
       _error = null;
       notifyListeners();
 
-      final response = await _jobsService.getJobsByType(jobType);
+      final response = await _jobsService.getJobsByType();
       print(response.jobs);
       _jobs = response.jobs;
       _totalJobs = response.total;

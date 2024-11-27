@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laborus_app/core/routes/go_router_prevent_duplicate.dart';
 
 class CustomAppBarIntroduction extends StatelessWidget
     implements PreferredSizeWidget {
@@ -21,7 +22,10 @@ class CustomAppBarIntroduction extends StatelessWidget
       centerTitle: true,
       elevation: 0,
       leading: IconButton(
-        onPressed: onBack ?? () => context.pop(),
+        onPressed: onBack ??
+            () => context.canPop()
+                ? GoRouter.of(context).popAndNavigate(context)
+                : GoRouter.of(context).goNavigate(context, '/'),
         icon: Icon(
           Icons.arrow_back_rounded,
           size: 26,

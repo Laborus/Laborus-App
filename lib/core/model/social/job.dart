@@ -45,4 +45,23 @@ class Job {
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
+
+  String get timeAgo {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
+
+    if (difference.inDays > 365) {
+      return '${(difference.inDays / 365).floor()} ano${(difference.inDays / 365).floor() == 1 ? '' : 's'} atrás';
+    } else if (difference.inDays > 30) {
+      return '${(difference.inDays / 30).floor()} mês${(difference.inDays / 30).floor() == 1 ? '' : 'es'} atrás';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays} dia${difference.inDays == 1 ? '' : 's'} atrás';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hora${difference.inHours == 1 ? '' : 's'} atrás';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minuto${difference.inMinutes == 1 ? '' : 's'} atrás';
+    } else {
+      return 'Agora mesmo';
+    }
+  }
 }

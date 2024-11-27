@@ -132,10 +132,14 @@ class SchoolService {
   Future<DiscussionComment> addComment(
       String campusId, String discussionId, String textContent) async {
     String? token = await _authDatabase.getToken();
+    print('Add Comment Request:');
+    print('Campus ID: $campusId');
+    print('Discussion ID: $discussionId');
+    print('Token: $token');
 
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/discussions/$campusId/$discussionId/comments'),
+        Uri.parse('$_baseUrl/api/discussions/$campusId/$discussionId/comments'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -143,13 +147,19 @@ class SchoolService {
         body: json.encode({'textContent': textContent}),
       );
 
+      print('Add Comment Response:');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 201) {
         return DiscussionComment.fromJson(
             json.decode(response.body)['comment']);
       } else {
+        print('Failed to add comment. Response: ${response.body}');
         throw Exception('Failed to add comment');
       }
     } catch (e) {
+      print('Add Comment Error: $e');
       rethrow;
     }
   }
@@ -157,10 +167,15 @@ class SchoolService {
   Future<Discussion> closeDiscussion(
       String campusId, String discussionId, String commentId) async {
     String? token = await _authDatabase.getToken();
+    print('Close Discussion Request:');
+    print('Campus ID: $campusId');
+    print('Discussion ID: $discussionId');
+    print('Comment ID: $commentId');
+    print('Token: $token');
 
     try {
       final response = await http.patch(
-        Uri.parse('$_baseUrl/discussions/$campusId/$discussionId/close'),
+        Uri.parse('$_baseUrl/api/discussions/$campusId/$discussionId/close'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -168,35 +183,52 @@ class SchoolService {
         body: json.encode({'commentId': commentId}),
       );
 
+      print('Close Discussion Response:');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 200) {
         return Discussion.fromJson(json.decode(response.body)['discussion']);
       } else {
+        print('Failed to close discussion. Response: ${response.body}');
         throw Exception('Failed to close discussion');
       }
     } catch (e) {
+      print('Close Discussion Error: $e');
       rethrow;
     }
   }
 
   Future<Discussion> fetchDiscussionDetails(
       String campusId, String discussionId) async {
+    print('Fetch Discussion Details Request:');
+    print('Campus ID: $campusId');
+    print('Discussion ID: $discussionId');
+
     try {
       String? token = await _authDatabase.getToken();
+      print('Token: $token');
 
       final response = await http.get(
-        Uri.parse('$_baseUrl/discussions/$campusId/$discussionId'),
+        Uri.parse('$_baseUrl/api/$campusId/discussion/$discussionId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
 
+      print('Fetch Discussion Details Response:');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 200) {
         return Discussion.fromJson(json.decode(response.body)['discussion']);
       } else {
+        print('Failed to load discussion details. Response: ${response.body}');
         throw Exception('Failed to load discussion details');
       }
     } catch (e) {
+      print('Fetch Discussion Details Error: $e');
       rethrow;
     }
   }

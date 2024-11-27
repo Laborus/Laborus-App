@@ -78,20 +78,4 @@ class SignupValidation {
 
     return null;
   }
-
-  static String? validateAbout(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'O campo "Sobre" é obrigatório';
-    }
-
-    if (value.length < 10) {
-      return 'Escreva pelo menos 10 caracteres sobre você';
-    }
-
-    if (value.length > 500) {
-      return 'O texto não pode ultrapassar 500 caracteres';
-    }
-
-    return null;
-  }
 }

@@ -50,6 +50,42 @@ class StudentsService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getPendingConnections(
+      {String? senderId, String? receiverId}) async {
+    try {
+      final headers = await _getHeaders();
+      final url = Uri.parse('$baseUrl/api/connections/pending');
+      final body = json.encode({
+        if (senderId != null) 'senderId': senderId,
+        if (receiverId != null) 'receiverId': receiverId,
+      });
+
+      print('Fazendo requisição POST para: $url');
+      print('Headers: $headers');
+      print('Body: $body');
+
+      final response = await http.post(url, headers: headers, body: body);
+      print('Resposta recebida. Status: ${response.statusCode}');
+      print('Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final pendingConnections = responseData['data'] ?? [];
+
+        print('Conexões pendentes carregadas: ${pendingConnections.length}');
+        return List<Map<String, dynamic>>.from(pendingConnections);
+      } else {
+        print(
+            'Erro ao carregar conexões pendentes. Status: ${response.statusCode}');
+        print('Body: ${response.body}');
+        throw Exception('Failed to load pending connections');
+      }
+    } catch (e) {
+      print('Erro no método getPendingConnections: $e');
+      throw Exception('Error fetching pending connections: $e');
+    }
+  }
+
   Future<void> sendConnectionRequest(String receiverId) async {
     try {
       final headers = await _getHeaders();

@@ -4,7 +4,7 @@ class Validators {
   );
 
   static final RegExp passwordRegex = RegExp(
-    r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
+    r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#\$%^&*(),.?":{}|<>]{8,}$',
   );
 
   static String? validateEmail(String? value) {
@@ -31,7 +31,7 @@ class Validators {
       return 'A senha deve ter no mínimo 8 caracteres';
     }
     if (!passwordRegex.hasMatch(value)) {
-      return 'A senha deve conter letras e números';
+      return 'A senha deve conter letras e números, e pode conter caracteres especiais';
     }
     return null;
   }

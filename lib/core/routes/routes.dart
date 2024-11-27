@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laborus_app/core/model/laborus/post.dart';
 import 'package:laborus_app/core/model/users/person_model.dart';
 import 'package:laborus_app/pages/mobile/logic.dart';
 import 'package:laborus_app/pages/mobile/scAuth/signin/signin.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/campus/campus.dart';
+import 'package:laborus_app/pages/mobile/scLaborus/campus/widget/discussion_detail.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/challenge/challenges_page.dart';
 import 'package:laborus_app/pages/mobile/scLIA/chat/chatbot_page.dart';
+import 'package:laborus_app/pages/mobile/scLaborus/post_full_size/post_full_size_page.dart';
 import 'package:laborus_app/pages/mobile/scSocial/chat/chat_page.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/create_post/create_post_page.dart';
 import 'package:laborus_app/pages/mobile/scLaborus/feed/feed_page.dart';
@@ -30,6 +33,7 @@ final _profileNavigatorKey = GlobalKey<NavigatorState>();
 final _schoolNavigatorKey = GlobalKey<NavigatorState>();
 final _jobsNavigatorKey = GlobalKey<NavigatorState>();
 final _challengesNavigatorKey = GlobalKey<NavigatorState>();
+final _discussionNavigatorKey = GlobalKey<NavigatorState>();
 
 final _router = GoRouter(
   debugLogDiagnostics: true,
@@ -57,15 +61,15 @@ final _router = GoRouter(
         return const WelcomePage();
       },
     ),
-    // GoRoute(
-    //   path: '/feed/post',
-    //   name: 'post',
-    //   // builder: (context, state) {
-    //   //   return PostFullSizePage(
-    //   //     post: state.extra as Post,
-    //   //   );
-    //   // },
-    // ),
+    GoRoute(
+      path: '/feed/post',
+      name: 'post',
+      builder: (context, state) {
+        return PostFullSizePage(
+          post: state.extra as Post,
+        );
+      },
+    ),
     GoRoute(
       path: '/signin',
       name: 'Signin',
@@ -182,9 +186,21 @@ final _router = GoRouter(
           routes: [
             GoRoute(
               path: '/school',
-              name: 'school',
+              name: 'School',
               builder: (context, state) {
                 return const CampusScreen();
+              },
+            ),
+            GoRoute(
+              path: '/:campusId/discussion/:discussionId',
+              name: 'Discussion',
+              builder: (context, state) {
+                final campusId = state.pathParameters['campusId']!;
+                final discussionId = state.pathParameters['discussionId']!;
+                return DiscussionDetailsScreen(
+                  campusId: campusId,
+                  discussionId: discussionId,
+                );
               },
             ),
           ],

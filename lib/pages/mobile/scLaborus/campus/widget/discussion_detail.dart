@@ -1,8 +1,6 @@
-// lib/features/discussions/presentation/screens/discussion_list_screen.dart
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/providers/discussion_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 
 class DiscussionDetailsScreen extends StatefulWidget {
   final String campusId;
@@ -37,11 +35,11 @@ class _DiscussionDetailsScreenState extends State<DiscussionDetailsScreen> {
   }
 
   void _submitComment() {
-    if (_commentController.text.trim().isNotEmpty) {
-      Provider.of<DiscussionProvider>(context, listen: false).addComment(
-          widget.campusId, widget.discussionId, _commentController.text.trim());
-      _commentController.clear();
-    }
+    // if (_commentController.text.trim().isNotEmpty) {
+    //   Provider.of<DiscussionProvider>(context, listen: false).addComment(
+    //       widget.campusId, widget.discussionId, _commentController.text.trim());
+    //   _commentController.clear();
+    // }
   }
 
   @override
@@ -78,7 +76,7 @@ class _DiscussionDetailsScreenState extends State<DiscussionDetailsScreen> {
                               style: Theme.of(context).textTheme.bodyMedium),
                           const SizedBox(height: 16),
                           Text(
-                            'Criado por: ${discussion.postedBy.name}',
+                            'Criado por: ${discussion.postedBy?.name}',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
@@ -89,12 +87,12 @@ class _DiscussionDetailsScreenState extends State<DiscussionDetailsScreen> {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: discussion.comments.length,
+                      itemCount: discussion.comments?.length,
                       itemBuilder: (context, index) {
-                        final comment = discussion.comments[index];
+                        final comment = discussion.comments?[index];
                         return ListTile(
-                          title: Text(comment.textContent),
-                          subtitle: Text(comment.postedBy.name),
+                          title: Text(comment?.textContent ?? ''),
+                          subtitle: Text(comment?.postedBy?.name ?? ''),
                         );
                       },
                     ),
