@@ -59,6 +59,7 @@ class DiscussionProvider extends ChangeNotifier {
       _setLoadingState(true);
       _clearError();
 
+      // Assuming there's a method in SchoolService to fetch specific discussion details
       final discussion =
           await _userService.fetchDiscussionDetails(schoolId, discussionId);
 
@@ -66,6 +67,32 @@ class DiscussionProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _setError('Falha ao buscar detalhes da discussão: ${e.toString()}');
+    } finally {
+      _setLoadingState(false);
+    }
+  }
+
+  // Create a New Discussion
+  Future<Discussion?> createDiscussion(
+      {required String schoolId,
+      required String title,
+      required String description}) async {
+    try {
+      _setLoadingState(true);
+      _clearError();
+
+      // Assuming there's a method in SchoolService to create a discussion
+      final newDiscussion = await _userService.createDiscussion(
+          schoolId: schoolId, title: title, description: description);
+
+      // Optionally, add the new discussion to the list
+      _discussions.insert(0, newDiscussion);
+      notifyListeners();
+
+      return newDiscussion;
+    } catch (e) {
+      _setError('Falha ao criar discussão: ${e.toString()}');
+      return null;
     } finally {
       _setLoadingState(false);
     }

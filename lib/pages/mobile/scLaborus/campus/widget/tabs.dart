@@ -102,7 +102,7 @@ class _DiscussionTabState extends State<DiscussionTab> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final discussionProvider =
-          Provider.of<DiscussionProvider>(context, listen: false);
+          Provider.of<SchoolProvider>(context, listen: false);
       if (userProvider.user != null) {
         discussionProvider.fetchDiscussions(userProvider.user!.schoolId);
       }
@@ -221,169 +221,164 @@ class _DiscussionTabState extends State<DiscussionTab> {
             ),
           );
         }
-        final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-        return RefreshIndicator(
-          onRefresh: () => discussionProvider
-              .refreshDiscussions(userProvider.user?.schoolId ?? ''),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).padding.bottom,
-              top: MediaQuery.of(context).padding.top,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Discussões',
-                        style: TextStyle(
-                          fontSize: AppFontSize.large,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onTertiary,
-                        ),
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).padding.bottom,
+            top: MediaQuery.of(context).padding.top,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Discussões',
+                      style: TextStyle(
+                        fontSize: AppFontSize.large,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onTertiary,
                       ),
-                      IconButton(
-                        onPressed: _showCreateDiscussionModal,
-                        icon: const Icon(Icons.add),
-                      ),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      onPressed: _showCreateDiscussionModal,
+                      icon: const Icon(Icons.add),
+                    ),
+                  ],
                 ),
-                GenericListBuilderSeparated(
-                  padding: const EdgeInsets.only(top: 13),
-                  itemCount: discussionProvider.discussions.length,
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final discussion = discussionProvider.discussions[index];
-                    return ListTile(
-                      onTap: () =>
-                          _navigateToDiscussionDetails(context, discussion),
-                      tileColor: Theme.of(context).colorScheme.primary,
-                      titleAlignment: ListTileTitleAlignment.center,
-                      title: Text(
-                        discussion.title,
-                        style: TextStyle(
-                          fontSize: AppFontSize.medium,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onTertiary,
+              ),
+              GenericListBuilderSeparated(
+                padding: const EdgeInsets.only(top: 13),
+                itemCount: discussionProvider.discussions.length,
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final discussion = discussionProvider.discussions[index];
+                  return ListTile(
+                    onTap: () =>
+                        _navigateToDiscussionDetails(context, discussion),
+                    tileColor: Theme.of(context).colorScheme.primary,
+                    titleAlignment: ListTileTitleAlignment.center,
+                    title: Text(
+                      discussion.title,
+                      style: TextStyle(
+                        fontSize: AppFontSize.medium,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onTertiary,
+                      ),
+                    ),
+                    horizontalTitleGap: 12,
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 22, vertical: 5),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            // You might want to add tags logic here
+                            Text(
+                              discussion
+                                  .description, // Replace with actual tags if available
+                              style: TextStyle(
+                                fontSize: AppFontSize.small,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 3),
+                            Text(
+                              '•',
+                              style: TextStyle(
+                                fontSize: AppFontSize.small,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 3),
+                            Text(
+                              _calculateTimeAgo(discussion.createdAt),
+                              style: const TextStyle(
+                                fontSize: AppFontSize.small,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryPurple,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
-                      ),
-                      horizontalTitleGap: 12,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 22, vertical: 5),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              // You might want to add tags logic here
-                              Text(
-                                discussion
-                                    .description, // Replace with actual tags if available
+                        const SizedBox(
+                          height: 13,
+                        ),
+                        Row(
+                          children: [
+                            if (discussion.isClosed)
+                              Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.zero,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.green,
+                                  shape: BoxShape.circle,
+                                ),
+                                constraints:
+                                    BoxConstraints.tight(const Size(28, 28)),
+                                child: Icon(
+                                  Icons.check,
+                                  color: AppColors.neutralsDark[800],
+                                  size: AppFontSize.xxxLarge,
+                                ),
+                              ),
+                            TextButton.icon(
+                              label: Text(
+                                discussion.comments?.length.toString() ??
+                                    '0', // Number of comments
                                 style: TextStyle(
-                                  fontSize: AppFontSize.small,
+                                  fontSize: AppFontSize.medium,
                                   fontWeight: FontWeight.w500,
                                   color: Theme.of(context)
                                       .colorScheme
                                       .tertiaryContainer,
                                 ),
-                                overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(width: 3),
-                              Text(
-                                '•',
-                                style: TextStyle(
-                                  fontSize: AppFontSize.small,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .tertiaryContainer,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.chat_bubble_outline,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                size: AppFontSize.xxLarge,
                               ),
-                              const SizedBox(width: 3),
-                              Text(
-                                _calculateTimeAgo(discussion.createdAt),
-                                style: const TextStyle(
-                                  fontSize: AppFontSize.small,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.primaryPurple,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 13,
-                          ),
-                          Row(
-                            children: [
-                              if (discussion.isClosed)
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.zero,
-                                  decoration: const BoxDecoration(
-                                    color: AppColors.green,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  constraints:
-                                      BoxConstraints.tight(const Size(28, 28)),
-                                  child: Icon(
-                                    Icons.check,
-                                    color: AppColors.neutralsDark[800],
-                                    size: AppFontSize.xxxLarge,
-                                  ),
-                                ),
-                              TextButton.icon(
-                                label: Text(
-                                  discussion.comments?.length.toString() ??
-                                      '0', // Number of comments
-                                  style: TextStyle(
-                                    fontSize: AppFontSize.medium,
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .tertiaryContainer,
-                                  ),
-                                ),
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.chat_bubble_outline,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .tertiaryContainer,
-                                  size: AppFontSize.xxLarge,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Base64ImageWidget(
-                            height: 40,
-                            width: 40,
-                            base64String: discussion.postedBy?.photo ?? '',
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 1);
-                  },
-                )
-              ],
-            ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Base64ImageWidget(
+                          height: 40,
+                          width: 40,
+                          base64String: discussion.postedBy?.photo ?? '',
+                        )
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 1);
+                },
+              )
+            ],
           ),
         );
       },

@@ -24,23 +24,23 @@ class _CreateDiscussionModalState extends State<CreateDiscussionModal> {
     super.dispose();
   }
 
-  // void _submitDiscussion() {
-  //   if (_formKey.currentState!.validate()) {
-  //     final discussionProvider =
-  //         Provider.of<DiscussionProvider>(context, listen: false);
+  void _submitDiscussion() {
+    if (_formKey.currentState!.validate()) {
+      final discussionProvider =
+          Provider.of<DiscussionProvider>(context, listen: false);
 
-  //     discussionProvider
-  //         .createDiscussion(
-  //       schoolId: widget.schoolId,
-  //       title: _titleController.text.trim(),
-  //       description: _descriptionController.text.trim(),
-  //     )
-  //         .then((_) {
-  //       // Close the modal on successful creation
-  //       Navigator.of(context).pop();
-  //     });
-  //   }
-  // }
+      discussionProvider
+          .createDiscussion(
+        schoolId: widget.schoolId,
+        title: _titleController.text.trim(),
+        description: _descriptionController.text.trim(),
+      )
+          .then((_) {
+        // Close the modal on successful creation
+        Navigator.of(context).pop();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +113,8 @@ class _CreateDiscussionModalState extends State<CreateDiscussionModal> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {},
-                    // discussionProvider.isLoading ? null : _submitDiscussion,
+                    onPressed:
+                        discussionProvider.isLoading ? null : _submitDiscussion,
                     child: discussionProvider.isLoading
                         ? const CircularProgressIndicator()
                         : const Text('Criar Discussão'),
