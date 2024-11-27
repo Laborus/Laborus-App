@@ -33,14 +33,14 @@ class _NotificationsTabState extends State<NotificationsTab> {
     return Consumer<ConnectionRequestProvider>(
       builder: (context, connectionProvider, child) {
         if (connectionProvider.isLoading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (connectionProvider.error != null) {
           return Center(
             child: Text(
               'Error: ${connectionProvider.error}',
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           );
         }
@@ -86,11 +86,11 @@ class _NotificationsTabState extends State<NotificationsTab> {
                         .getUserDetails(request.sender?.id ?? ''),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
 
                       if (snapshot.hasError || !snapshot.hasData) {
-                        return ListTile(
+                        return const ListTile(
                           title: Text('Erro ao carregar o remetente'),
                         );
                       }
@@ -111,13 +111,13 @@ class _NotificationsTabState extends State<NotificationsTab> {
                         trailing: Column(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.check, color: Colors.green),
+                              icon: const Icon(Icons.check, color: Colors.green),
                               onPressed: () =>
                                   connectionProvider.respondToConnectionRequest(
                                       request.id, 'accept'),
                             ),
                             IconButton(
-                              icon: Icon(Icons.close, color: Colors.red),
+                              icon: const Icon(Icons.close, color: Colors.red),
                               onPressed: () =>
                                   connectionProvider.respondToConnectionRequest(
                                       request.id, 'reject'),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laborus_app/core/components/cards/post_card.dart';
-import 'package:laborus_app/core/components/generics/avatar_picture.dart';
 import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
 import 'package:laborus_app/core/model/social/discussion.dart';
@@ -339,7 +338,7 @@ class _DiscussionTabState extends State<DiscussionTab> {
                               ),
                             TextButton.icon(
                               label: Text(
-                                discussion.comments?.length.toString() ??
+                                discussion.comments.length.toString() ??
                                     '0', // Number of comments
                                 style: TextStyle(
                                   fontSize: AppFontSize.medium,
@@ -368,7 +367,7 @@ class _DiscussionTabState extends State<DiscussionTab> {
                         Base64ImageWidget(
                           height: 40,
                           width: 40,
-                          base64String: discussion.postedBy?.photo ?? '',
+                          base64String: discussion.postedBy.photo ?? '',
                         )
                       ],
                     ),

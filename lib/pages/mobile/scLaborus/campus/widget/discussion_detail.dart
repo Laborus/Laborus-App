@@ -76,7 +76,7 @@ class _DiscussionDetailsScreenState extends State<DiscussionDetailsScreen> {
                               style: Theme.of(context).textTheme.bodyMedium),
                           const SizedBox(height: 16),
                           Text(
-                            'Criado por: ${discussion.postedBy?.name}',
+                            'Criado por: ${discussion.postedBy.name}',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
@@ -87,12 +87,12 @@ class _DiscussionDetailsScreenState extends State<DiscussionDetailsScreen> {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: discussion.comments?.length,
+                      itemCount: discussion.comments.length,
                       itemBuilder: (context, index) {
-                        final comment = discussion.comments?[index];
+                        final comment = discussion.comments[index];
                         return ListTile(
-                          title: Text(comment?.textContent ?? ''),
-                          subtitle: Text(comment?.postedBy?.name ?? ''),
+                          title: Text(comment.textContent ?? ''),
+                          subtitle: Text(comment.postedBy.name ?? ''),
                         );
                       },
                     ),

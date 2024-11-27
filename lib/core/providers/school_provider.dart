@@ -41,11 +41,24 @@ class SchoolProvider extends ChangeNotifier {
   Future<void> fetchAlerts(String schoolId) async {
     try {
       _setLoadingState(true);
+      _error = null; // Reset error before fetching
+
+      // Validate schoolId
+      if (schoolId.isEmpty) {
+        _setError('ID da escola inválido');
+        return;
+      }
+
       final fetchedAlerts = await _userService.getAlertsBySchoolId(schoolId);
       _alerts = fetchedAlerts;
+
+      // Log successful fetch
+      print('✅ Alerts fetched successfully: ${_alerts.length} alerts');
+
       notifyListeners();
     } catch (e) {
       _setError('Falha ao buscar alertas: ${e.toString()}');
+      print('🚨 Fetch Alerts Error: $e');
     } finally {
       _setLoadingState(false);
     }

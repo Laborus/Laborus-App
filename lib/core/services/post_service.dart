@@ -115,12 +115,10 @@ class PostService {
         return Post.fromJson(json.decode(response.body));
       } else {
         print(response.body);
-
         throw Exception('Falha ao criar post: ${response.statusCode}');
       }
     } catch (e) {
       print(e);
-
       throw Exception('Erro ao criar post: $e');
     }
   }

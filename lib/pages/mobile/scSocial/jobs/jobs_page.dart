@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:laborus_app/core/components/forms/input_search.dart';
 import 'package:laborus_app/core/components/navigation/custom_appbar_bottom.dart';
-import 'package:laborus_app/core/providers/jobs_provider.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
 import 'package:laborus_app/pages/mobile/scSocial/jobs/widget/jobs.dart';
-import 'package:provider/provider.dart';
 
 class JobsPage extends StatelessWidget {
   const JobsPage({super.key});

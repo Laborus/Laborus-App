@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
 import 'package:laborus_app/pages/mobile/scSocial/notification/widgets/all_notifications_tab.dart';
-import 'package:laborus_app/pages/mobile/scSocial/notification/widgets/campus_tab.dart';
-import 'package:laborus_app/pages/mobile/scSocial/notification/widgets/following_tab.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});

@@ -30,6 +30,13 @@ class SchoolService {
   Future<List<Alert>> getAlertsBySchoolId(String schoolId) async {
     try {
       String? token = await _authDatabase.getToken();
+
+      // Add explicit null check and logging
+      if (token == null) {
+        print('🚨 No authentication token found');
+        throw Exception('Usuário não autenticado');
+      }
+
       final response = await http.get(
         Uri.parse('$_baseUrl/api/alerts/$schoolId'),
         headers: {
@@ -37,14 +44,22 @@ class SchoolService {
           'Authorization': 'Bearer $token'
         },
       );
+
+      print('Alert Response Status: ${response.statusCode}');
+      print('Alert Response Body: ${response.body}');
+
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
       if (responseData['status'] == 'SUCCESS') {
         final List<dynamic> alertsData = responseData['data'];
         return alertsData.map((json) => Alert.fromJson(json)).toList();
       }
+
+      // More detailed error logging
+      print('❌ Alert Fetch Error: ${responseData['message']}');
       throw Exception(responseData['message']);
     } catch (e) {
+      print('🚨 Alerts Fetch Exception: ${e.toString()}');
       throw Exception('Falha ao buscar alertas: ${e.toString()}');
     }
   }

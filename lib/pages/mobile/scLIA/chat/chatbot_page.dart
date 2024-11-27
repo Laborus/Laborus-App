@@ -43,7 +43,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
             builder: (context, chatProvider, _) {
               return Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     backgroundImage: AssetImage('assets/img/LIA.jpeg'),
                     radius: 20,
                   ),

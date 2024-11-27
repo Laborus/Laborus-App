@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
 import 'package:laborus_app/core/components/list/generic_list_tile.dart';
-import 'package:laborus_app/pages/mobile/scSocial/chat/data/dummy_data.dart';
 import 'package:laborus_app/core/model/social/people.dart';
 import 'package:laborus_app/core/utils/theme/colors.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';

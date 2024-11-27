@@ -38,7 +38,7 @@ class ProfileHeader extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: [
         if (imageUpdateProvider.isLoading) const LinearProgressIndicator(),
-        Container(
+        SizedBox(
           height: 200,
           child: Stack(
             fit: StackFit.expand,

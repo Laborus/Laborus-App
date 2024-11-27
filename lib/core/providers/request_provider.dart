@@ -5,7 +5,6 @@ import 'package:laborus_app/core/data/auth_database.dart';
 import 'dart:convert';
 
 import 'package:laborus_app/core/model/responses/connecttion_request.dart';
-import 'package:laborus_app/core/model/responses/user_request_model.dart';
 import 'package:laborus_app/core/model/users/person_model.dart';
 
 class ConnectionRequestProvider with ChangeNotifier {

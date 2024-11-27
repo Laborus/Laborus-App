@@ -22,6 +22,7 @@ class PostProvider extends ChangeNotifier {
   List<Post> get postsCampus => _postsCampus;
   List<Post> get userPosts => _userPosts;
   List<Comment> get comments => _comments;
+
   Future<void> loadPosts() async {
     debugPrint('Starting loadPosts');
     try {
@@ -68,7 +69,7 @@ class PostProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> createPost(Post post, {String? campusId}) async {
+  Future<Post> createPost(Post post, {String? campusId}) async {
     try {
       _setLoadingState(true);
 
@@ -78,6 +79,8 @@ class PostProvider extends ChangeNotifier {
 
       _posts.insert(0, newPost);
       notifyListeners();
+
+      return newPost;
     } catch (e) {
       _setError(e.toString());
       rethrow;

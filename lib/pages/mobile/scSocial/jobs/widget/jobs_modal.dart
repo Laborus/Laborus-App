@@ -25,12 +25,12 @@ class JobDetailModal extends StatelessWidget {
             // Job Header
             Row(
               children: [
-                AvatarPicture(
+                const AvatarPicture(
                   imagePath: 'assets/img/company.png',
                   size: 48,
                 ),
                 const SizedBox(width: 16),
-                Divider(),
+                const Divider(),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
