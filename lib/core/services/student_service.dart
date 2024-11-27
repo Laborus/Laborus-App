@@ -142,4 +142,18 @@ class StudentsService {
       throw Exception('Error fetching user connections: $e');
     }
   }
+
+  Future<PersonModel> getUserById(String id) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/api/users/$id'));
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      if (responseData['status'] == 'SUCCESS') {
+        return PersonModel.fromJson(responseData['data']);
+      }
+      throw Exception(responseData['message']);
+    } catch (e) {
+      throw Exception('Falha ao buscar usuário: ${e.toString()}');
+    }
+  }
 }

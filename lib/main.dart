@@ -8,6 +8,7 @@ import 'package:laborus_app/core/providers/discussion_provider.dart';
 import 'package:laborus_app/core/providers/image_update_provider.dart';
 import 'package:laborus_app/core/providers/jobs_provider.dart';
 import 'package:laborus_app/core/providers/post_provider.dart';
+import 'package:laborus_app/core/providers/request_provider.dart';
 import 'package:laborus_app/core/providers/school_provider.dart';
 import 'package:laborus_app/core/providers/signin_provider.dart';
 import 'package:laborus_app/core/providers/route_stack_provider.dart';
@@ -95,6 +96,9 @@ void main() async {
             SchoolService(),
             AuthDatabase(),
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ConnectionRequestProvider(),
         ),
       ],
       child: const LaborusAPP(),

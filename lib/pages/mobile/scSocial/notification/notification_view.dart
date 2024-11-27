@@ -16,7 +16,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 1,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         appBar: AppBar(
@@ -44,15 +44,7 @@ class _NotificationPageState extends State<NotificationPage> {
             tabs: const [
               Tab(
                 height: 34,
-                text: 'Todas',
-              ),
-              Tab(
-                height: 34,
-                text: 'Meu Campus',
-              ),
-              Tab(
-                height: 34,
-                text: 'Seguindo',
+                text: 'Soliciatações',
               ),
             ],
           ),
@@ -60,8 +52,6 @@ class _NotificationPageState extends State<NotificationPage> {
         body: const TabBarView(
           children: [
             NotificationsTab(),
-            CampusTab(),
-            FollowingTab(),
           ],
         ),
       ),

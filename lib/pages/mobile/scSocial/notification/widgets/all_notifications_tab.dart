@@ -1,142 +1,154 @@
 import 'package:flutter/material.dart';
-import 'package:laborus_app/core/components/generics/avatar_picture.dart';
-import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
+import 'package:laborus_app/core/components/generics/base64_image.dart';
 import 'package:laborus_app/core/components/list/notification_tile.dart';
-import 'package:laborus_app/core/utils/theme/colors.dart';
+import 'package:laborus_app/core/model/users/person_model.dart';
+import 'package:laborus_app/core/providers/request_provider.dart';
+import 'package:laborus_app/core/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:laborus_app/core/components/list/generic_list_builder_separated.dart';
 import 'package:laborus_app/core/utils/theme/font_size.dart';
 
-class NotificationsTab extends StatelessWidget {
+class NotificationsTab extends StatefulWidget {
   const NotificationsTab({super.key});
 
   @override
+  _NotificationsTabState createState() => _NotificationsTabState();
+}
+
+class _NotificationsTabState extends State<NotificationsTab> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch pending connections when the tab is first loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ConnectionRequestProvider>(context, listen: false)
+          .fetchPendingConnections();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(22),
-            child: Row(
-              children: [
-                Text(
-                  'Notificações',
-                  style: TextStyle(
-                    fontSize: AppFontSize.xxLarge,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onTertiary,
-                  ),
-                ),
-                const SizedBox(width: 3),
-                Text(
-                  '2',
-                  style: TextStyle(
-                    fontSize: AppFontSize.xxLarge,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.tertiaryContainer,
-                  ),
-                ),
-              ],
+    final currentUserId = // Get the current user's ID from your auth provider
+        Provider.of<UserProvider>(context, listen: false).user?.id ?? '';
+    return Consumer<ConnectionRequestProvider>(
+      builder: (context, connectionProvider, child) {
+        if (connectionProvider.isLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (connectionProvider.error != null) {
+          return Center(
+            child: Text(
+              'Error: ${connectionProvider.error}',
+              style: TextStyle(color: Colors.red),
             ),
-          ),
-          GenericListBuilderSeparated(
-            padding:
-                EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-            itemCount: 3,
-            separatorBuilder: (context, index) => const SizedBox(
-              height: 1,
-            ),
-            itemBuilder: (context, index) => NotificationTile(
-              leading: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryPurple,
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                  ),
-                  const SizedBox(width: 3),
-                  const AvatarPicture(
-                    imagePath: 'assets/img/profile.jpg',
-                    size: 40,
-                  ),
-                ],
-              ),
-              title: Text.rich(
-                TextSpan(
+          );
+        }
+
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(22),
+                child: Row(
                   children: [
-                    TextSpan(
-                      text: "Maria Clara Júnior ",
+                    Text(
+                      'Notificações',
                       style: TextStyle(
+                        fontSize: AppFontSize.xxLarge,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onTertiary,
                       ),
                     ),
-                    TextSpan(
-                      text: "enviou uma solicitação de conexão",
+                    const SizedBox(width: 3),
+                    Text(
+                      '${connectionProvider.pendingRequests.length}',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onTertiary,
+                        fontSize: AppFontSize.xxLarge,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
                       ),
                     ),
                   ],
                 ),
-                style: const TextStyle(fontSize: AppFontSize.medium),
-                maxLines: null,
               ),
-              subtitle: const Text(
-                "46 segundos atrás",
-                style: TextStyle(
-                  fontSize: AppFontSize.small,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryPurple,
-                ),
+              GenericListBuilderSeparated(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom),
+                itemCount: connectionProvider.pendingRequests.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 1),
+                itemBuilder: (context, index) {
+                  final request = connectionProvider.pendingRequests[index];
+
+                  return FutureBuilder<PersonModel?>(
+                    future: connectionProvider
+                        .getUserDetails(request.sender?.id ?? ''),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasError || !snapshot.hasData) {
+                        return ListTile(
+                          title: Text('Erro ao carregar o remetente'),
+                        );
+                      }
+
+                      final sender = snapshot.data!;
+                      return NotificationTile(
+                        leading: Base64ImageWidget(
+                          base64String: sender.profileImage,
+                          width: 40,
+                          height: 40,
+                        ),
+                        title: Text(
+                          '${sender.name} enviou uma solicitação de conexão',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onTertiary,
+                          ),
+                        ),
+                        trailing: Column(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.check, color: Colors.green),
+                              onPressed: () =>
+                                  connectionProvider.respondToConnectionRequest(
+                                      request.id, 'accept'),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.close, color: Colors.red),
+                              onPressed: () =>
+                                  connectionProvider.respondToConnectionRequest(
+                                      request.id, 'reject'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
-              trailing: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    constraints: BoxConstraints.tight(const Size(28, 28)),
-                    onPressed: () {},
-                    style: const ButtonStyle(
-                      padding: WidgetStatePropertyAll(
-                        EdgeInsets.all(0),
-                      ),
-                      backgroundColor: WidgetStatePropertyAll(
-                        AppColors.green,
-                      ),
-                    ),
-                    icon: Icon(
-                      Icons.check,
-                      color: AppColors.neutralsDark[800]!,
-                      size: AppFontSize.xxLarge,
-                    ),
-                  ),
-                  IconButton(
-                    constraints: BoxConstraints.tight(const Size(28, 28)),
-                    onPressed: () {},
-                    style: const ButtonStyle(
-                      padding: WidgetStatePropertyAll(
-                        EdgeInsets.all(0),
-                      ),
-                      backgroundColor: WidgetStatePropertyAll(
-                        AppColors.red,
-                      ),
-                    ),
-                    icon: Icon(
-                      Icons.close,
-                      color: AppColors.neutralsDark[800]!,
-                      size: AppFontSize.xxLarge,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
+  }
+
+  // Helper method to format time ago
+  String _formatTimeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inSeconds < 60) {
+      return 'Agora há pouco';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} minutos atrás';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} horas atrás';
+    } else {
+      return '${difference.inDays} dias atrás';
+    }
   }
 }
